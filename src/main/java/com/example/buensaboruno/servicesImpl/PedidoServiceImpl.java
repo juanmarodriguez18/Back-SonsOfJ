@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements PedidoService {
 
     private PedidoRepository pedidoRepository;
+
     public PedidoServiceImpl(PedidoRepository pedidoRepository) {
         super(pedidoRepository);
         this.pedidoRepository = pedidoRepository;
