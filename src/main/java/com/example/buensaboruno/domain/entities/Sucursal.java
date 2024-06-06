@@ -2,6 +2,7 @@ package com.example.buensaboruno.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
@@ -34,7 +35,8 @@ public class Sucursal extends  Base{
     protected Set<ImagenSucursal> imagenesSucursal = new HashSet<>();
 
     @ManyToOne
-    @JsonBackReference
+    //@JsonBackReference
+    @JsonIgnore
     private Empresa empresa;
 
     @OneToOne

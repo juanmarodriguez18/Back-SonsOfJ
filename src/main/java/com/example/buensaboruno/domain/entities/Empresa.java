@@ -1,14 +1,11 @@
 package com.example.buensaboruno.domain.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.envers.Audited;
-
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,7 +15,6 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-//@Audited
 public class Empresa extends Base{
 
     private String nombre;
@@ -32,6 +28,6 @@ public class Empresa extends Base{
     @OneToMany(mappedBy = "empresa",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @ToString.Exclude
     @Builder.Default
-    @JsonManagedReference
+    //@JsonManagedReference
     private Set<Sucursal> sucursales= new HashSet<>();
 }
