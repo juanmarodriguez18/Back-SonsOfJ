@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 public class PaisServiceImpl extends BaseServiceImpl<Pais, Long> implements PaisService {
 
     private PaisRepository paisRepository;
+
     public PaisServiceImpl(PaisRepository paisRepository) {
         super(paisRepository);
         this.paisRepository = paisRepository;
     }
+
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 
 public abstract class BaseServiceImpl <T extends Base, ID extends Serializable> implements BaseService<T, ID> {
+
     protected final BaseRepository<T, ID> baseRepository;
 
     public BaseServiceImpl(BaseRepository<T, ID> baseRepository) {
@@ -70,4 +71,5 @@ public abstract class BaseServiceImpl <T extends Base, ID extends Serializable> 
             throw new Exception("Error al eliminar la entidad: " + e.getMessage(), e);
         }
     }
+
 }
