@@ -29,6 +29,10 @@ public class Sucursal extends  Base{
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
 
+    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    protected Set<ImagenSucursal> imagenesSucursal = new HashSet<>();
+
     @ManyToOne
     @JsonBackReference
     private Empresa empresa;
