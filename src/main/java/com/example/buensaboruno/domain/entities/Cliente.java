@@ -1,6 +1,8 @@
 package com.example.buensaboruno.domain.entities;
 
 import com.example.buensaboruno.domain.enums.Rol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
@@ -33,6 +35,7 @@ public class Cliente extends Base {
             joinColumns = @JoinColumn(name = "domicilio_id"),
             inverseJoinColumns = @JoinColumn(name = "cliente_id"))
     @Builder.Default
+    @JsonManagedReference
     private Set<Domicilio> domicilios = new HashSet<>();
 
     @OneToOne
@@ -46,6 +49,7 @@ public class Cliente extends Base {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @Builder.Default
+    @JsonIgnore
     private Set<Pedido> pedidos = new HashSet<>();
 
     /*

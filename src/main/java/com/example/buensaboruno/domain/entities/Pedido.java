@@ -4,6 +4,7 @@ import com.example.buensaboruno.domain.enums.Estado;
 import com.example.buensaboruno.domain.enums.FormaPago;
 import com.example.buensaboruno.domain.enums.TipoEnvio;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,6 +33,7 @@ public class Pedido extends Base{
     private LocalDate fechaPedido;
 
     @ManyToOne
+    @JsonIgnore
     private Sucursal sucursal;
 
     @ManyToOne
@@ -39,6 +41,7 @@ public class Pedido extends Base{
 
     @ManyToOne
     @JoinColumn(name = "empleado_id")
+    @JsonIgnore
     private Empleado empleado;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "pedido")
