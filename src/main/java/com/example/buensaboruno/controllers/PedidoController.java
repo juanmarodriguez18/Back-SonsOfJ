@@ -22,7 +22,7 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoServiceIm
         try {
             List<Pedido> pedidos = service.findAll();
             return ResponseEntity.status(HttpStatus.OK).body(pedidos);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener todos los pedidos. Por favor intente luego\"}");
         }
     }
@@ -31,11 +31,10 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoServiceIm
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody Pedido pedido) {
         try {
-
             //pedido.getPedidoDetalles().forEach(pedidoDetalle -> pedidoDetalle.getArticulo().getId());
             System.out.println(pedido.getCliente().getId());
             return ResponseEntity.status(HttpStatus.OK).body(service.save(pedido));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar el pedido. Por favor intente luego\"}");
         }
     }
