@@ -34,11 +34,11 @@ public class Cliente extends Base {
     //@JsonManagedReference
     private Set<Domicilio> domicilios = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @NotAudited
     private ImagenCliente imagenCliente;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @NotAudited
     private UsuarioCliente usuarioCliente;
 
