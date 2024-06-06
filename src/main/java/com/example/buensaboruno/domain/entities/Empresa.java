@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -27,5 +28,6 @@ public class Empresa extends Base{
     @OneToMany(mappedBy = "empresa",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @ToString.Exclude
     @Builder.Default
+    @JsonManagedReference
     private Set<Sucursal> sucursales= new HashSet<>();
 }

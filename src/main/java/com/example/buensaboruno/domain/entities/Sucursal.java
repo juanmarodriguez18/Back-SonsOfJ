@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
@@ -28,6 +29,7 @@ public class Sucursal extends  Base{
     private LocalTime horarioCierre;
 
     @ManyToOne
+    @JsonBackReference
     private Empresa empresa;
 
     @OneToOne
