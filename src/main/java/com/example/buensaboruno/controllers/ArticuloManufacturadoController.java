@@ -6,9 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
-
 
 @RestController
 @RequestMapping(path = "/articulos-manufacturados")
@@ -28,7 +26,6 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener todos los artículos manufacturados. Por favor intente luego\"}");
         }
     }
-
 
     @Override
     @PostMapping("")

@@ -1,51 +1,41 @@
 package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.Pedido;
-import com.example.buensaboruno.services.PedidoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.buensaboruno.servicesImpl.PedidoServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/pedidos")
-public class PedidoController {
+@RequestMapping(path = "/pedidos")
+public class PedidoController extends BaseControllerImpl<Pedido, PedidoServiceImpl> {
 
-    @Autowired
-    private PedidoService pedidoService;
+    public PedidoController(PedidoServiceImpl service) {
+        super(service);
+    }
 
-    @PostMapping
-    public ResponseEntity<Pedido> createPedido(@RequestBody Pedido pedido) {
+    @Override
+    @GetMapping("")
+    public ResponseEntity<?> getAll() {
         try {
-            Pedido nuevoPedido = pedidoService.save(pedido);
-            return ResponseEntity.ok(nuevoPedido);
+            List<Pedido> pedidos = service.findAll();
+            return ResponseEntity.status(HttpStatus.OK).body(pedidos);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener todos los pedidos. Por favor intente luego\"}");
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Pedido>> getAllPedidos() {
+    @Override
+    @PostMapping("")
+    public ResponseEntity<?> save(@RequestBody Pedido pedido) {
         try {
-            List<Pedido> pedidos = pedidoService.findAll();
-            return ResponseEntity.ok(pedidos);
+            //pedido.getPedidoDetalles().forEach(pedidoDetalle -> pedidoDetalle.getArticulo().getId());
+            System.out.println(pedido.getCliente().getId());
+            return ResponseEntity.status(HttpStatus.OK).body(service.save(pedido));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Pedido> getPedidoById(@PathVariable Long id) {
-        try {
-            Pedido pedido = pedidoService.findById(id);
-            if (pedido != null) {
-                return ResponseEntity.ok(pedido);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar el pedido. Por favor intente luego\"}");
         }
     }
 }

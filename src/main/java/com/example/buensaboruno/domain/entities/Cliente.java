@@ -1,15 +1,13 @@
 package com.example.buensaboruno.domain.entities;
 
-import com.example.buensaboruno.domain.enums.Rol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,19 +31,21 @@ public class Cliente extends Base {
             joinColumns = @JoinColumn(name = "domicilio_id"),
             inverseJoinColumns = @JoinColumn(name = "cliente_id"))
     @Builder.Default
+    //@JsonManagedReference
     private Set<Domicilio> domicilios = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @NotAudited
     private ImagenCliente imagenCliente;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @NotAudited
     private UsuarioCliente usuarioCliente;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     @Builder.Default
+    @JsonIgnore
     private Set<Pedido> pedidos = new HashSet<>();
 
     /*

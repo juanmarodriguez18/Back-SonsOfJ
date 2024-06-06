@@ -1,5 +1,8 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
@@ -27,7 +30,13 @@ public class Sucursal extends  Base{
     private LocalTime horarioApertura;
     private LocalTime horarioCierre;
 
+    @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    protected Set<ImagenSucursal> imagenesSucursal = new HashSet<>();
+
     @ManyToOne
+    //@JsonBackReference
+    @JsonIgnore
     private Empresa empresa;
 
     @OneToOne
@@ -51,6 +60,7 @@ public class Sucursal extends  Base{
 
     @OneToMany(mappedBy = "sucursal",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @Builder.Default
+    @JsonIgnore
     private Set<Empleado> empleados = new HashSet<>();
 
     @OneToMany(mappedBy = "sucursal",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
