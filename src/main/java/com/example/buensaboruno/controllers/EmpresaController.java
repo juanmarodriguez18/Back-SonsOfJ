@@ -2,6 +2,7 @@ package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.Empresa;
 import com.example.buensaboruno.servicesImpl.EmpresaServiceImpl;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/empresas")
+@JsonIgnoreProperties
 public class EmpresaController extends BaseControllerImpl<Empresa, EmpresaServiceImpl> {
 
     public EmpresaController(EmpresaServiceImpl service) {
