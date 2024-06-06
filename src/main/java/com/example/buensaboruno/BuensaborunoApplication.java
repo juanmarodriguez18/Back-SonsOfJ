@@ -25,21 +25,6 @@ public class BuensaborunoApplication {
     private static final Logger logger = LoggerFactory.getLogger(BuensaborunoApplication.class);
 
     @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private ImagenClienteRepository imagenPersonaRepository;
-
-    @Autowired
-    private PromocionDetalleRepository promocionDetalleRepository;
-
-    @Autowired
-    private UsuarioEmpleadoRepository usuarioEmpleadoRepository;
-
-    @Autowired
-    private UsuarioClienteRepository usuarioClienteRepository;
-
-    @Autowired
     private PaisRepository paisRepository;
 
     @Autowired
@@ -49,16 +34,19 @@ public class BuensaborunoApplication {
     private LocalidadRepository localidadRepository;
 
     @Autowired
-    private EmpresaRepository empresaRepository;
+    private DomicilioRepository domicilioRepository;
 
     @Autowired
     private SucursalRepository sucursalRepository;
 
     @Autowired
-    private DomicilioRepository domicilioRepository;
+    private ImagenSucursalRepository imagenSucursalRepository;
 
     @Autowired
-    private UnidadMedidaRepository unidadMedidaRepository;
+    private EmpresaRepository empresaRepository;
+
+    @Autowired
+    private ImagenEmpresaRepository imagenEmpresaRepository;
 
     @Autowired
     private CategoriaRepository categoriaRepository;
@@ -70,16 +58,46 @@ public class BuensaborunoApplication {
     private ArticuloManufacturadoRepository articuloManufacturadoRepository;
 
     @Autowired
+    private ArticuloManufacturadoDetalleRepository articuloManufacturadoDetalleRepository;
+
+    @Autowired
     private ImagenArticuloRepository imagenArticuloRepository;
+
+    @Autowired
+    private UnidadMedidaRepository unidadMedidaRepository;
 
     @Autowired
     private PromocionRepository promocionRepository;
 
     @Autowired
-    private ArticuloManufacturadoDetalleRepository articuloManufacturadoDetalleRepository;
+    private PromocionDetalleRepository promocionDetalleRepository;
+
+    @Autowired
+    private ImagenPromocionRepository imagenPromocionRepository;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private ImagenClienteRepository imagenClienteRepository;
+
+    @Autowired
+    private UsuarioClienteRepository usuarioClienteRepository;
+
+    @Autowired
+    private EmpleadoRepository empleadoRepository;
+
+    @Autowired
+    private ImagenEmpleadoRepository imagenEmpleadoRepository;
+
+    @Autowired
+    private UsuarioEmpleadoRepository usuarioEmpleadoRepository;
 
     @Autowired
     private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(BuensaborunoApplication.class, args);
@@ -89,146 +107,138 @@ public class BuensaborunoApplication {
 
     @Bean
     @Transactional
-    CommandLineRunner init(ClienteRepository clienteRepository,
-                           ImagenClienteRepository imagenClienteRepository,
-                           ImagenPromocionRepository imagenPromocionRepository,
-                           ImagenEmpleadoRepository imagenEmpleadoRepository,
-                           PromocionDetalleRepository promocionDetalleRepository,
-                           UsuarioClienteRepository usuarioClienteRepository,
-                           UsuarioEmpleadoRepository usuarioEmpleadoRepository,
-                           PaisRepository paisRepository,
+    CommandLineRunner init(PaisRepository paisRepository,
                            ProvinciaRepository provinciaRepository,
                            LocalidadRepository localidadRepository,
-                           EmpresaRepository empresaRepository,
-                           SucursalRepository sucursalRepository,
                            DomicilioRepository domicilioRepository,
-                           UnidadMedidaRepository unidadMedidaRepository,
+                           SucursalRepository sucursalRepository,
+                           ImagenSucursalRepository imagenSucursalRepository,
+                           EmpresaRepository empresaRepository,
+                           ImagenEmpresaRepository imagenEmpresaRepository,
                            CategoriaRepository categoriaRepository,
                            ArticuloInsumoRepository articuloInsumoRepository,
                            ArticuloManufacturadoRepository articuloManufacturadoRepository,
+                           ArticuloManufacturadoDetalleRepository articuloManufacturadoDetalleRepository,
                            ImagenArticuloRepository imagenArticuloRepository,
+                           UnidadMedidaRepository unidadMedidaRepository,
                            PromocionRepository promocionRepository,
-                           PedidoRepository pedidoRepository,
+                           PromocionDetalleRepository promocionDetalleRepository,
+                           ImagenPromocionRepository imagenPromocionRepository,
+                           ClienteRepository clienteRepository,
+                           ImagenClienteRepository imagenClienteRepository,
+                           UsuarioClienteRepository usuarioClienteRepository,
                            EmpleadoRepository empleadoRepository,
+                           ImagenEmpleadoRepository imagenEmpleadoRepository,
+                           UsuarioEmpleadoRepository usuarioEmpleadoRepository,
+                           PedidoRepository pedidoRepository,
                            FacturaRepository facturaRepository)
     {
         return args -> {
             logger.info("----------------ESTOY----FUNCIONANDO---------------------");
-            // Etapa del dashboard
-            // Crear 1 pais
-            // Crear 2 provincias para ese pais
-            // crear 2 localidades para cada provincia
 
-            // CREACION DE PAIS
+            // Crear Pais
             Pais pais1 = Pais.builder().nombre("Argentina").build();
             paisRepository.save(pais1);
 
-            // CREACION DE PROVINCIAS
+            // Crear Provincias
             Provincia provincia1 = Provincia.builder().nombre("Mendoza").pais(pais1).build();
             Provincia provincia2 = Provincia.builder().nombre("Buenos Aires").pais(pais1).build();
-            provinciaRepository.save(provincia1);
-            provinciaRepository.save(provincia2);
+            provinciaRepository.saveAll(Arrays.asList(provincia1, provincia2));
 
-            // CREACION DE LOCALIDADES
+            // Crear Localidades
             Localidad localidad1 = Localidad.builder().nombre("Lujan de Cuyo").provincia(provincia1).build();
             Localidad localidad2 = Localidad.builder().nombre("Guaymallen").provincia(provincia1).build();
             Localidad localidad3 = Localidad.builder().nombre("Mar del Plata").provincia(provincia2).build();
             Localidad localidad4 = Localidad.builder().nombre("Mar de las Pampas").provincia(provincia2).build();
-            localidadRepository.save(localidad1);
-            localidadRepository.save(localidad2);
-            localidadRepository.save(localidad3);
-            localidadRepository.save(localidad4);
+            localidadRepository.saveAll(Arrays.asList(localidad1, localidad2, localidad3, localidad4));
+            logger.info("-----> Terminada la creacion de Pais, Provincias y Localidades");
 
-            // Crear 1 empresa, 2 sucursales para esa empresa y los Domicilios para esas sucursales
-            Empresa empresaCarlos = Empresa.builder().nombre("Lo de Carlos").cuil(30546780L).razonSocial("Venta de Alimentos").build();
+            // Crear Empresa, la Imagen y asociarla
+            Empresa empresaCarlos = Empresa.builder()
+                    .nombre("San Carlos")
+                    .cuil(30546780L)
+                    .razonSocial("Venta de Alimentos Manufacturados")
+                    .build();
+            ImagenEmpresa imgEmpCarlos = ImagenEmpresa.builder()
+                    .url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI2INnfz2sb25ROCczmEQdKYAIlCFbbItGDg&s")
+                    .empresa(empresaCarlos)
+                    .build();
+            empresaCarlos.getImagenesEmpresa().add(imgEmpCarlos);
+
+            // Guardar Empresa e Imagen
             empresaRepository.save(empresaCarlos);
+            imagenEmpresaRepository.save(imgEmpCarlos);
 
-            Sucursal sucursalGuaymallen = Sucursal.builder().nombre("En Guaymallen").horarioApertura(LocalTime.of(17, 0)).horarioCierre(LocalTime.of(23, 0)).build();
-            Sucursal sucursalMarDelPlata = Sucursal.builder().nombre("En MDP").horarioApertura(LocalTime.of(16, 0)).horarioCierre(LocalTime.of(23, 30)).build();
+            // Crear Sucursales, las Imagenes y asociarlas
+            Sucursal sucursalGuaymallen = Sucursal.builder()
+                    .nombre("En Guaymallen")
+                    .horarioApertura(LocalTime.of(17, 0))
+                    .horarioCierre(LocalTime.of(23, 0))
+                    .empresa(empresaCarlos)
+                    .build();
+            Sucursal sucursalMarDelPlata = Sucursal.builder()
+                    .nombre("En MDP")
+                    .horarioApertura(LocalTime.of(16, 0))
+                    .horarioCierre(LocalTime.of(23, 30))
+                    .empresa(empresaCarlos)
+                    .build();
+            ImagenSucursal imgSucGuay = ImagenSucursal.builder()
+                    .url("https://www.guaymallen.gob.ar/wp-content/uploads/2019/01/escudo-1-229x300.png")
+                    .sucursal(sucursalGuaymallen)
+                    .build();
+            ImagenSucursal imgSucMDP = ImagenSucursal.builder()
+                    .url("https://upload.wikimedia.org/wikipedia/commons/2/22/Escudo_de_General_Pueyrred%C3%B3n_%28color%29.svg")
+                    .sucursal(sucursalMarDelPlata)
+                    .build();
+            sucursalGuaymallen.getImagenesSucursal().add(imgSucGuay);
+            sucursalMarDelPlata.getImagenesSucursal().add(imgSucMDP);
 
+            // Guardar Sucursales e Imagenes
+            sucursalRepository.saveAll(Arrays.asList(sucursalGuaymallen, sucursalMarDelPlata));
+            imagenSucursalRepository.saveAll(Arrays.asList(imgSucGuay, imgSucMDP));
+
+            // Crear Domicilios
             Domicilio domicilioBerutti = Domicilio.builder().cp(5519).calle("Berutti").numero(2684).piso(0).nroDpto(5).localidad(localidad1).build();
             Domicilio domicilioGaboto = Domicilio.builder().cp(7600).calle("Gaboto").numero(3475).localidad(localidad2).build();
+            domicilioRepository.saveAll(Arrays.asList(domicilioBerutti, domicilioGaboto));
 
-            // GRABAMOS DOMICILIOS
-            domicilioRepository.save(domicilioBerutti);
-            domicilioRepository.save(domicilioGaboto);
-
-            // ASOCIAMOS LOS DOMICILIOS A SUCURSAL
+            // Asignar Domicilios a Sucursales
             sucursalGuaymallen.setDomicilio(domicilioBerutti);
             sucursalMarDelPlata.setDomicilio(domicilioGaboto);
 
-            // ASOCIAMOS SUCURSALES A EMPRESA
-            empresaCarlos.getSucursales().add(sucursalGuaymallen);
-            empresaCarlos.getSucursales().add(sucursalMarDelPlata);
+            // Guardar Sucursales
+            sucursalRepository.saveAll(Arrays.asList(sucursalGuaymallen, sucursalMarDelPlata));
+            logger.info("-----> Terminada la creacion de Empresa, Sucursales y Domicilios, y asignacion de Domicilio a Sucursal");
 
-            // ASIGNAMOS EMPRESA A SUCURSALES
-            sucursalGuaymallen.setEmpresa(empresaCarlos);
-            sucursalMarDelPlata.setEmpresa(empresaCarlos);
-
-            // Grabo las sucursales
-            sucursalRepository.save(sucursalGuaymallen);
-            sucursalRepository.save(sucursalMarDelPlata);
-
-            // Grabi empresa
-            //empresaRepository.save(empresaCarlos);
-
-            // Crear Categorías de productos y subCategorías de los mismos
+            // Crear Categorías y Sub-Categorías
             Categoria categoriaBebidas = Categoria.builder().denominacion("Bebidas").build();
-            categoriaRepository.save(categoriaBebidas);
-
             Categoria categoriaGaseosas = Categoria.builder().denominacion("Gaseosas").build();
-            categoriaRepository.save(categoriaGaseosas);
-
             Categoria categoriaTragos = Categoria.builder().denominacion("Tragos").build();
-            categoriaRepository.save(categoriaTragos);
-
             Categoria categoriaPizzas = Categoria.builder().denominacion("Pizzas").build();
             Categoria categoriaInsumos = Categoria.builder().denominacion("Insumos").build();
+            categoriaRepository.saveAll(Arrays.asList(categoriaBebidas, categoriaGaseosas, categoriaTragos, categoriaPizzas, categoriaInsumos));
 
-            // Grabo la categoría de insumos y de Manufacturados
-            categoriaRepository.save(categoriaPizzas);
-            categoriaRepository.save(categoriaInsumos);
-
-
-
-            // Asigno subCategorías
-            categoriaBebidas.getSubCategorias().add(categoriaGaseosas);
-            categoriaBebidas.getSubCategorias().add(categoriaTragos);
-
-            // Grabo las Subcategorías
+            // Asignar Sub-Categorías
+            categoriaBebidas.getSubCategorias().addAll(Arrays.asList(categoriaGaseosas, categoriaTragos));
             categoriaRepository.save(categoriaBebidas);
 
-            logger.info("---------------Voy a asignar a Guaymallen--------------------");
-            // ASOCIAMOS CATEGORIAS CON SUCURSAL
-            categoriaInsumos.getSucursales().add(sucursalGuaymallen);
-
-            // Cargo las categorias a la sucursal Guaymallen
-            sucursalGuaymallen.getCategorias().add(categoriaInsumos);
-            sucursalGuaymallen.getCategorias().add(categoriaBebidas);
-            sucursalGuaymallen.getCategorias().add(categoriaGaseosas);
-            sucursalGuaymallen.getCategorias().add(categoriaTragos);
-            sucursalGuaymallen.getCategorias().add(categoriaPizzas);
-            logger.info("{}", sucursalGuaymallen);
-
-            // Grabo las categorias que vende esa sucursal
+            // Asignar Categorías a sucursales
+            sucursalGuaymallen.getCategorias().addAll(Arrays.asList(categoriaInsumos, categoriaBebidas, categoriaGaseosas, categoriaTragos, categoriaPizzas));
             sucursalRepository.save(sucursalGuaymallen);
-            logger.info("---------------Grabe Guaymallen--------------------");
+            logger.info("-----> Terminada la creacion de Categorias, asignacion de Sub-Categorias y asignacion de Categorias a Sucursal");
 
-            logger.info("---------------Voy a asignar a Mardel Plata--------------------");
-
-            // Crear Unidades de medida
+            // Crear unidades de medida
             UnidadMedida unidadMedidaLitros = UnidadMedida.builder().denominacion("Litros").build();
             UnidadMedida unidadMedidaGramos = UnidadMedida.builder().denominacion("Gramos").build();
             UnidadMedida unidadMedidaCantidad = UnidadMedida.builder().denominacion("Cantidad").build();
             UnidadMedida unidadMedidaPorciones = UnidadMedida.builder().denominacion("Porciones").build();
-            unidadMedidaRepository.save(unidadMedidaLitros);
-            unidadMedidaRepository.save(unidadMedidaGramos);
-            unidadMedidaRepository.save(unidadMedidaCantidad);
-            unidadMedidaRepository.save(unidadMedidaPorciones);
+            unidadMedidaRepository.saveAll(Arrays.asList(unidadMedidaLitros, unidadMedidaGramos, unidadMedidaCantidad, unidadMedidaPorciones));
+            logger.info("-----> Terminada la creacion de Unidades de Medida");
 
-            // Crear Insumos
+            // Crear Articulos Insumos
+            // Crear CocaCola, la imagen y asociarla
             ArticuloInsumo cocaCola = ArticuloInsumo.builder()
-                    .denominacion("Coca cola")
+                    .denominacion("Coca Cola")
                     .unidadMedida(unidadMedidaLitros)
                     .esParaElaborar(false)
                     .categoria(categoriaGaseosas)
@@ -242,8 +252,8 @@ public class BuensaborunoApplication {
                     .articulo(cocaCola)
                     .build();
             cocaCola.getImagenesArticulo().add(imagenCoca);
-            logger.info("Insumo {}", cocaCola);
 
+            // Crear Harina, la imagen y asociarla
             ArticuloInsumo harina = ArticuloInsumo.builder()
                     .denominacion("Harina")
                     .unidadMedida(unidadMedidaGramos)
@@ -259,8 +269,8 @@ public class BuensaborunoApplication {
                     .articulo(harina)
                     .build();
             harina.getImagenesArticulo().add(imagenHarina);
-            logger.info("Insumo {}", harina);
 
+            // Crear Tomate, la imagen y asociarla
             ArticuloInsumo tomate = ArticuloInsumo.builder()
                     .denominacion("Tomate")
                     .unidadMedida(unidadMedidaCantidad)
@@ -276,8 +286,8 @@ public class BuensaborunoApplication {
                     .articulo(tomate)
                     .build();
             tomate.getImagenesArticulo().add(imagenTomate);
-            logger.info("Insumo {}", tomate);
 
+            // Crear Queso, la imagen y asociarla
             ArticuloInsumo queso = ArticuloInsumo.builder()
                     .denominacion("Queso")
                     .unidadMedida(unidadMedidaGramos)
@@ -293,13 +303,14 @@ public class BuensaborunoApplication {
                     .articulo(queso)
                     .build();
             queso.getImagenesArticulo().add(imagenQueso);
-            logger.info("Insumo {}", queso);
 
-            // Guardar los insumos
+            // Guardar Articulos Insumos e Imagenes
             articuloInsumoRepository.saveAll(Arrays.asList(cocaCola, harina, tomate, queso));
-
+            imagenArticuloRepository.saveAll(Arrays.asList(imagenCoca, imagenHarina, imagenTomate, imagenQueso));
+            logger.info("-----> Terminada la creacion de Articulos Insumos");
 
             // Crear Articulos Manufacturados
+            // Crear Pizza Muzarella, la imagen y asociarla
             ArticuloManufacturado pizzaMuzarella = ArticuloManufacturado.builder()
                     .denominacion("Pizza Muzarella")
                     .descripcion("Una pizza clasica")
@@ -314,7 +325,7 @@ public class BuensaborunoApplication {
                     .articulo(pizzaMuzarella)
                     .build();
             pizzaMuzarella.getImagenesArticulo().add(imagenPizzaMuzarella);
-
+            // Crear Detalles de Pizza Muzarella y asociarla
             ArticuloManufacturadoDetalle detalleHarinaPizzaMuzarella = ArticuloManufacturadoDetalle.builder()
                     .cantidad(1)
                     .articuloInsumo(harina)
@@ -327,8 +338,7 @@ public class BuensaborunoApplication {
                     .build();
             pizzaMuzarella.setArticuloManufacturadoDetalles(Set.of(detalleHarinaPizzaMuzarella, detalleQuesoPizzaMuzarella));
 
-            logger.info("Manufacturado {}", pizzaMuzarella);
-
+            // Crear Pizza Napolitana, la imagen y asociarla
             ArticuloManufacturado pizzaNapolitana = ArticuloManufacturado.builder()
                     .denominacion("Pizza Napolitana")
                     .descripcion("Una pizza clasica con tomate")
@@ -343,6 +353,7 @@ public class BuensaborunoApplication {
                     .articulo(pizzaNapolitana)
                     .build();
             pizzaNapolitana.getImagenesArticulo().add(imagenPizzaNapolitana);
+            // Crear Detalles de Pizza Napolitana y asociarla
             ArticuloManufacturadoDetalle detalleHarinaPizzaNapolitana = ArticuloManufacturadoDetalle.builder()
                     .cantidad(3)
                     .articuloInsumo(harina)
@@ -360,65 +371,58 @@ public class BuensaborunoApplication {
                     .build();
             pizzaNapolitana.setArticuloManufacturadoDetalles(Set.of(detalleHarinaPizzaNapolitana, detalleQuesoPizzaNapolitana, detalleTomatePizzaNapolitana));
 
-            logger.info("Manufacturado {}", pizzaNapolitana);
-
-            // Guardar los artículos manufacturados
+            // Guardar los Artículos Manufacturados y los Artículos Manufacturados Detalles e Imagenes
             articuloManufacturadoRepository.saveAll(Arrays.asList(pizzaMuzarella, pizzaNapolitana));
+            articuloManufacturadoDetalleRepository.saveAll(Arrays.asList(detalleHarinaPizzaMuzarella, detalleHarinaPizzaNapolitana));
+            imagenArticuloRepository.saveAll(Arrays.asList(imagenPizzaMuzarella, imagenPizzaNapolitana));
 
-
-            categoriaRepository.save(categoriaInsumos);
-            categoriaRepository.save(categoriaGaseosas);
-
-
-            // Establecer relaciones de las categorias - Cada Producto Manufacturado Pertenece a una categoria
-            categoriaPizzas.getArticulos().add(pizzaMuzarella);
-            categoriaPizzas.getArticulos().add(pizzaNapolitana);
-
-            // Graba la categoria y los productos asociados
+            // Asignar Pizzas a Categoria Pizzas
+            categoriaPizzas.getArticulos().addAll(Arrays.asList(pizzaMuzarella, pizzaNapolitana));
             categoriaRepository.save(categoriaPizzas);
+            logger.info("-----> Terminada la creacion de Articulos Manufacturados (Pizzas) y asignacion a la Categoria Pizzas");
 
-            // Crear promocion para sucursal - Dia de los enamorados
-            Promocion promocionDiaEnamorados = Promocion.builder()
+            // Crear Promociones
+            // Crear Promocion Dia de los Enamorados
+            Promocion promoDiaEnamorados = Promocion.builder()
                     .denominacion("Dia de los Enamorados")
                     .fechaDesde(LocalDate.of(2024, 2, 13))
                     .fechaHasta(LocalDate.of(2024, 2, 15))
                     .horaDesde(LocalTime.of(0, 0))
                     .horaHasta(LocalTime.of(23, 59))
-                    .descripcionDescuento("El descuento que se hace por san valentin, un dia antes y un dia despues")
-                    .precioPromocional(100.0)
+                    .descripcionDescuento("Dia 13, 14 y 15 con descuento - 2 Pizzas Muzarella + 2 Coca Cola 1.5lts")
+                    .precioPromocional(150.0)
                     .tipoPromocion(TipoPromocion.PROMOCION)
                     .build();
-
-            // Agregamos los Manufacturados y alguna bebida que figura como insumo
+            // ACA VA LA CREACION DE "ImagenPromocion" CON LA ASOCIACION A LA PROMO
+            // Crear Detalles de Promocion Dia de los Enamorados y asociarlos con la Promocion
             PromocionDetalle detallePromo1 = PromocionDetalle.builder()
                     .cantidad(2)
-                    .articulo(pizzaNapolitana)
+                    .articulo(pizzaMuzarella)
                     .build();
             PromocionDetalle detallePromo2 = PromocionDetalle.builder()
-                    .cantidad(1)
+                    .cantidad(2)
                     .articulo(cocaCola)
                     .build();
+            promoDiaEnamorados.getPromocionDetalles().addAll(Arrays.asList(detallePromo1, detallePromo2));
+
+            // Guardar Promocion y los Detalles de Promocion
             promocionDetalleRepository.save(detallePromo1);
             promocionDetalleRepository.save(detallePromo2);
+            promocionRepository.save(promoDiaEnamorados);
 
-            promocionDiaEnamorados.getPromocionDetalles().add(detallePromo1);
-            promocionDiaEnamorados.getPromocionDetalles().add(detallePromo2);
-
-            promocionRepository.save(promocionDiaEnamorados);
-
-            // Crear promocion para sucursal - Pizza + Coca
-            Promocion pizzaConCoca = Promocion.builder()
-                    .denominacion("Piza + coca")
-                    .fechaDesde(LocalDate.of(2024, 2, 13))
-                    .fechaHasta(LocalDate.of(2024, 2, 15))
-                    .horaDesde(LocalTime.of(0, 0))
-                    .horaHasta(LocalTime.of(23, 59))
-                    .descripcionDescuento("Pizza + Coca Cola 1.5lts")
+            // Crear Promocion Pizza + Coca
+            Promocion promoPizzaConCocas = Promocion.builder()
+                    .denominacion("Pizza + Cocas")
+                    .fechaDesde(LocalDate.of(2024, 1, 1))
+                    .fechaHasta(LocalDate.of(2024, 12, 31))
+                    .horaDesde(LocalTime.of(20, 0))
+                    .horaHasta(LocalTime.of(23, 0))
+                    .descripcionDescuento("Pizza Napolitana + 2 Coca Cola 1.5lts")
                     .precioPromocional(100.0)
                     .tipoPromocion(TipoPromocion.PROMOCION)
                     .build();
-
-            // Agregamos los Manufacturados y alguna bebida que figura como insumo
+            // ACA VA LA CREACION DE "ImagenPromocion" CON LA ASOCIACION A LA PROMO
+            // Crear Detalles de Promocion Pizza + Cocas y asociarlos con la Promocion
             PromocionDetalle detallePromo3 = PromocionDetalle.builder()
                     .cantidad(1)
                     .articulo(pizzaNapolitana)
@@ -427,13 +431,19 @@ public class BuensaborunoApplication {
                     .cantidad(2)
                     .articulo(cocaCola)
                     .build();
+            promoPizzaConCocas.getPromocionDetalles().addAll(Arrays.asList(detallePromo3, detallePromo4));
+
+            // Guardar Promocion y los Detalles de Promocion
             promocionDetalleRepository.save(detallePromo3);
             promocionDetalleRepository.save(detallePromo4);
+            promocionRepository.save(promoPizzaConCocas);
+            logger.info("-----> Terminada la creacion de Promociones");
+            logger.info("--------------------------------------------------->");
+            logger.info("--------------------------------------------------->");
 
-            pizzaConCoca.getPromocionDetalles().add(detallePromo3);
-            pizzaConCoca.getPromocionDetalles().add(detallePromo4);
-
-            promocionRepository.save(pizzaConCoca);
+            //----------------------------------------------------------------------------------------------------------
+            // TODO LO DE ARRIBA ESTA BIEN ESTRUCTURADO
+            //----------------------------------------------------------------------------------------------------------
 
             //sucursalRepository.save(sucursalGuaymallen);
             //sucursalRepository.save(sucursalMarDelPlata);

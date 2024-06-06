@@ -24,6 +24,10 @@ public class Empresa extends Base{
     private String razonSocial;
     private Long cuil;
 
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @Builder.Default
+    protected Set<ImagenEmpresa> imagenesEmpresa = new HashSet<>();
+
     @OneToMany(mappedBy = "empresa",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @ToString.Exclude
     @Builder.Default
