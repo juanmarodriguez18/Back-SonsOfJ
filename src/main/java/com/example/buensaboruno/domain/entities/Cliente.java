@@ -35,14 +35,13 @@ public class Cliente extends Base {
             joinColumns = @JoinColumn(name = "domicilio_id"),
             inverseJoinColumns = @JoinColumn(name = "cliente_id"))
     @Builder.Default
-    @JsonManagedReference
     private Set<Domicilio> domicilios = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @NotAudited
     private ImagenCliente imagenCliente;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @NotAudited
     private UsuarioCliente usuarioCliente;
 
