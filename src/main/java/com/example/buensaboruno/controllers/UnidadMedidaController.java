@@ -55,7 +55,43 @@ public class UnidadMedidaController extends BaseControllerImpl<UnidadMedida, Uni
         }
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/eliminar")
+    public ResponseEntity<?> eliminarUnidadMedida(@PathVariable Long id) {
+        try {
+            UnidadMedida unidadMedida = service.findById(id);
+            if (unidadMedida == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Unidad de medida no encontrada\"}");
+            }
+
+            unidadMedida.setEliminado(true);
+            service.update(unidadMedida);
+
+            // Devolver la unidad de medida actualizada
+            return ResponseEntity.status(HttpStatus.OK).body(unidadMedida);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al eliminar la unidad de medida. Por favor intente luego\"}");
+        }
+    }
+
+    @PatchMapping("/{id}/recuperar")
+    public ResponseEntity<?> recuperarUnidadMedida(@PathVariable Long id) {
+        try {
+            UnidadMedida unidadMedida = service.findById(id);
+            if (unidadMedida == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Unidad de medida no encontrada\"}");
+            }
+
+            unidadMedida.setEliminado(false);
+            service.update(unidadMedida);
+
+            // Devolver la unidad de medida actualizada
+            return ResponseEntity.status(HttpStatus.OK).body(unidadMedida);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al recuperar la unidad de medida. Por favor intente luego\"}");
+        }
+    }
+
+    /*@PatchMapping("/{id}")
     public ResponseEntity<?> eliminarUnidadMedida(@PathVariable Long id, @RequestBody Map<String, Boolean> body) {
         try {
             UnidadMedida unidadMedida = service.findById(id);
@@ -70,10 +106,12 @@ public class UnidadMedidaController extends BaseControllerImpl<UnidadMedida, Uni
 
             unidadMedida.setEliminado(eliminado);
             service.update(unidadMedida);
+
+            // Devolver la unidad de medida actualizada
             return ResponseEntity.status(HttpStatus.OK).body(unidadMedida);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al actualizar la unidad de medida. Por favor intente luego\"}");
         }
-    }
+    }*/
 
 }
