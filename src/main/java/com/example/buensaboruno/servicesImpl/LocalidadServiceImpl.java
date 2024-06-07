@@ -19,4 +19,7 @@ public class LocalidadServiceImpl extends BaseServiceImpl<Localidad, Long> imple
     public List<Localidad> findByProvincia(String provincia) {
         return localidadRepository.findByProvincia(provincia);
     }
+    public Localidad findByNombre(String nombre) {
+        return localidadRepository.findByNombre(nombre);
+    }
 }
