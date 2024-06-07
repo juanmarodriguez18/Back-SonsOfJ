@@ -28,7 +28,17 @@ public class LocalidadController extends BaseControllerImpl<Localidad, Localidad
         }
     }
 
-    @GetMapping("/{provincia}")
+    @GetMapping("/con/{nombre}")
+    public ResponseEntity<?> findByNombre(@PathVariable String nombre) {
+        try {
+            Localidad localidad = service.findByNombre(nombre);
+            return ResponseEntity.status(HttpStatus.OK).body(localidad);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener todos las localidades. Por favor intente luego\"}");
+        }
+    }
+
+    @GetMapping("/de/{provincia}")
     public ResponseEntity<?> findByProvincia(@PathVariable String provincia) {
         try {
             List<Localidad> localidades = service.findByProvincia(provincia);

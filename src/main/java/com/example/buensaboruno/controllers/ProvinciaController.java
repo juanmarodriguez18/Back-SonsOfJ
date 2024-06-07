@@ -28,7 +28,7 @@ public class ProvinciaController extends BaseControllerImpl<Provincia, Provincia
         }
     }
 
-    @GetMapping("/{pais}")
+    @GetMapping("/de/{pais}")
     public ResponseEntity<?> findByProvincia(@PathVariable String pais) {
         try {
             List<Provincia> provincias = service.findByPais(pais);
