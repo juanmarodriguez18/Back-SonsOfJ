@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface ProvinciaRepository extends BaseRepository<Provincia,Long>{
     @Query("SELECT p FROM Provincia p WHERE p.pais.nombre = :pais")
-    List<Provincia> findByPais(@Param(":pais") String pais);
+    List<Provincia> findByPais(@Param("pais") String pais);
 }
