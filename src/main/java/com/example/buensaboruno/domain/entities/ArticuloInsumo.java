@@ -19,8 +19,8 @@ import java.util.Set;
 public class ArticuloInsumo extends Articulo{
 
     private Double precioCompra;
-    private Integer stockActual;
-    private Integer stockMaximo;
+    private Double stockActual;
+    private Integer stockMinimo;
     private Boolean esParaElaborar;
 
 }

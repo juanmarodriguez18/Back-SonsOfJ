@@ -131,7 +131,7 @@ public class BuensaborunoApplication {
                            ImagenEmpleadoRepository imagenEmpleadoRepository,
                            UsuarioEmpleadoRepository usuarioEmpleadoRepository,
                            PedidoRepository pedidoRepository,
-                           FacturaRepository facturaRepository)
+                           FacturaRepository facturaRepository, PedidoDetalleRepository pedidoDetalleRepository)
     {
         return args -> {
             logger.info("----------------ESTOY----FUNCIONANDO---------------------");
@@ -242,8 +242,8 @@ public class BuensaborunoApplication {
                     .unidadMedida(unidadMedidaLitros)
                     .esParaElaborar(false)
                     .categoria(categoriaGaseosas)
-                    .stockActual(5)
-                    .stockMaximo(50)
+                    .stockActual(500.0)
+                    .stockMinimo(10)
                     .precioCompra(50.0)
                     .precioVenta(70.0)
                     .build();
@@ -259,8 +259,8 @@ public class BuensaborunoApplication {
                     .unidadMedida(unidadMedidaGramos)
                     .esParaElaborar(true)
                     .categoria(categoriaInsumos)
-                    .stockActual(4)
-                    .stockMaximo(40)
+                    .stockActual(1500.0)
+                    .stockMinimo(10)
                     .precioCompra(40.0)
                     .precioVenta(60.5)
                     .build();
@@ -276,8 +276,8 @@ public class BuensaborunoApplication {
                     .unidadMedida(unidadMedidaCantidad)
                     .esParaElaborar(true)
                     .categoria(categoriaInsumos)
-                    .stockActual(20)
-                    .stockMaximo(50)
+                    .stockActual(20.0)
+                    .stockMinimo(10)
                     .precioCompra(23.6)
                     .precioVenta(66.6)
                     .build();
@@ -293,8 +293,8 @@ public class BuensaborunoApplication {
                     .unidadMedida(unidadMedidaGramos)
                     .esParaElaborar(true)
                     .categoria(categoriaInsumos)
-                    .stockActual(20)
-                    .stockMaximo(50)
+                    .stockActual(20.0)
+                    .stockMinimo(10)
                     .precioCompra(23.6)
                     .precioVenta(66.6)
                     .build();
@@ -494,11 +494,13 @@ public class BuensaborunoApplication {
             //Crea un pedido para el cliente
             Pedido pedido = Pedido.builder().fechaPedido(LocalDate.now()).horaEstimadaFinalizacion(LocalTime.now()).total(300.0).totalCosto(170.6).estado(Estado.PREPARACION).formaPago(FormaPago.MERCADO_PAGO).tipoEnvio(TipoEnvio.DELIVERY).sucursal(sucursalGuaymallen).domicilio(domicilioCliente).build();
 
-            PedidoDetalle detallePedido1 = PedidoDetalle.builder().articulo(pizzaMuzarella).cantidad(1).subTotal(200.0).build();
-            PedidoDetalle detallePedido2 = PedidoDetalle.builder().articulo(cocaCola).cantidad(2).subTotal(100.0).build();
+            PedidoDetalle detallePedido1 = PedidoDetalle.builder().articulo(pizzaMuzarella).cantidad(1).subTotal(200.0).pedido(pedido).build();
+            PedidoDetalle detallePedido2 = PedidoDetalle.builder().articulo(cocaCola).cantidad(2).subTotal(100.0).pedido(pedido).build();
 
             pedido.getPedidoDetalles().add(detallePedido1);
             pedido.getPedidoDetalles().add(detallePedido2);
+
+
             pedido.setCliente(cliente);
             pedido.setEmpleado(empleado);
             pedidoRepository.save(pedido);
@@ -510,7 +512,14 @@ public class BuensaborunoApplication {
                     .mpPaymentType("Tipo" + random.nextInt(10)) // Se asume un rango máximo de 10
                     .formaPago(FormaPago.EFECTIVO).totalVenta(random.nextDouble() * 1000).build();
 
+            Factura facturaBuilder2 = Factura.builder().fechaFcturacion(LocalDate.now()).mpPaymentId(random.nextInt(1000))  // Se asume un rango máximo de 1000
+                    .mpMerchantOrderId(random.nextInt(1000)) // Se asume un rango máximo de 1000
+                    .mpPreferenceId("MP-" + random.nextInt(10000))  // Se asume un rango máximo de 10000
+                    .mpPaymentType("Tipo" + random.nextInt(10)) // Se asume un rango máximo de 10
+                    .formaPago(FormaPago.EFECTIVO).totalVenta(random.nextDouble() * 1000).build();
+
             facturaRepository.save(facturaBuilder);
+            facturaRepository.save(facturaBuilder2);
 
             pedido.setFactura(facturaBuilder);
 

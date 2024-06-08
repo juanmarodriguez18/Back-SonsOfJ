@@ -2,6 +2,7 @@ package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.servicesImpl.PedidoServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,13 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/pedidos")
-public class PedidoController extends BaseControllerImpl<Pedido, PedidoServiceImpl> {
+public class PedidoController {
+
+    private final PedidoServiceImpl service;
 
     public PedidoController(PedidoServiceImpl service) {
-        super(service);
+        this.service = service;
     }
 
-    @Override
     @GetMapping("")
     public ResponseEntity<?> getAll() {
         try {
@@ -27,15 +29,53 @@ public class PedidoController extends BaseControllerImpl<Pedido, PedidoServiceIm
         }
     }
 
-    @Override
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody Pedido pedido) {
+    public ResponseEntity<?> save(@Valid @RequestBody Pedido pedido) {
         try {
-            //pedido.getPedidoDetalles().forEach(pedidoDetalle -> pedidoDetalle.getArticulo().getId());
-            System.out.println(pedido.getCliente().getId());
-            return ResponseEntity.status(HttpStatus.OK).body(service.save(pedido));
+            Pedido savedPedido = service.save(pedido);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedPedido);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar el pedido. Por favor intente luego\"}");
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        try {
+            service.deleteById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al eliminar el pedido. Por favor intente luego\"}");
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Pedido pedido) {
+        try {
+            pedido.setId(id);
+            Pedido updatedPedido = service.update(pedido, id);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedPedido);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al actualizar el pedido. Por favor intente luego\"}");
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            Pedido pedido = service.findById(id);
+            if (pedido == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Pedido no encontrado\"}");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(pedido);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener el pedido. Por favor intente luego\"}");
         }
     }
 }

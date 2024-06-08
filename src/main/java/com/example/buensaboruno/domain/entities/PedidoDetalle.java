@@ -1,6 +1,7 @@
 package com.example.buensaboruno.domain.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,8 +22,9 @@ public class PedidoDetalle extends Base{
     private Articulo articulo;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name = "pedido_id")
-    @JsonBackReference
+    @JsonBackReference(value = "pedido-pedidodetalle")
     private Pedido pedido;
 
 }
