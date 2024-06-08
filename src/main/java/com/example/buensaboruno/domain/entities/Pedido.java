@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -33,7 +34,7 @@ public class Pedido extends Base{
     private LocalDate fechaPedido;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonBackReference(value = "sucursal-pedido")
     private Sucursal sucursal;
 
     @ManyToOne
@@ -41,12 +42,13 @@ public class Pedido extends Base{
 
     @ManyToOne
     @JoinColumn(name = "empleado_id")
-    @JsonIgnore
+    @JsonBackReference(value = "empleado-pedido")
     private Empleado empleado;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "pedido")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pedido_id")
     @Builder.Default
-    @JsonManagedReference
+    @NotAudited
     private Set<PedidoDetalle> pedidoDetalles = new HashSet<>();
 
     @ManyToOne
