@@ -254,7 +254,7 @@ public class BuensaborunoApplication {
                     .build();
             cocaCola.getImagenesArticulo().add(imagenCoca);
 
-            // Crear Harina, la imagen y asociarla
+            // Crear Harina, la imagen y asociarlaaaa
             ArticuloInsumo harina = ArticuloInsumo.builder()
                     .denominacion("Harina")
                     .unidadMedida(unidadMedidaGramos)
