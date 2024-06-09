@@ -45,6 +45,9 @@ dependencies {
 	//OPEN API
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.1.0'
 
+	// JACKSON DATATYPE JSR310
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.hibernate.orm:hibernate-envers:6.4.4.Final'
 }

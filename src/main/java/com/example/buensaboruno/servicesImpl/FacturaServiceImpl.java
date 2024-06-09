@@ -13,4 +13,5 @@ public class FacturaServiceImpl extends BaseServiceImpl<Factura, Long> implement
         super(facturaRepository);
         this.facturaRepository = facturaRepository;
     }
+
 }

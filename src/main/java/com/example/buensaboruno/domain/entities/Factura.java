@@ -1,6 +1,7 @@
 package com.example.buensaboruno.domain.entities;
 
 import com.example.buensaboruno.domain.enums.FormaPago;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,9 +19,10 @@ import java.util.List;
 @ToString
 @Builder
 //@Audited
-public class Factura extends Base{
 
-    private LocalDate fechaFcturacion;
+public class Factura extends Base{
+    @Temporal(TemporalType.DATE)
+    private LocalDate fechaFacturacion;
     private Integer mpPaymentId;
     private Integer mpMerchantOrderId;
     private String mpPreferenceId;
