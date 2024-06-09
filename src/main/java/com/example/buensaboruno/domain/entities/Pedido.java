@@ -26,12 +26,14 @@ import java.util.Set;
 @Builder
 //@Audited
 public class Pedido extends Base{
-    private LocalTime horaEstimadaFinalizacion;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime horaEstimadaFinalizacion;
     private Double total;
     private Double totalCosto;
     private Estado estado;
     private TipoEnvio tipoEnvio;
     private FormaPago formaPago;
+    @Temporal(TemporalType.DATE)
     private LocalDate fechaPedido;
 
     @ManyToOne
