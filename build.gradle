@@ -19,6 +19,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repository.mercadopago.com/release' }
 }
 
 
@@ -47,6 +48,9 @@ dependencies {
 
 	// JACKSON DATATYPE JSR310
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+	// MERCADO PAGO
+	implementation 'com.mercadopago:sdk-java:2.1.24'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.hibernate.orm:hibernate-envers:6.4.4.Final'
