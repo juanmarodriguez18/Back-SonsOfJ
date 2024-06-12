@@ -43,11 +43,12 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ArticuloManufacturado articulo) {
         try {
+            articulo.getImagenesArticulo().forEach(imagenArticulo -> imagenArticulo.setArticulo(articulo));
+            articulo.getArticuloManufacturadoDetalles().forEach(articuloManufacturadoDetalle -> articuloManufacturadoDetalle.setArticuloManufacturado(articulo));
             ArticuloManufacturado searchedEntity = service.findById(id);
             if (searchedEntity == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Artículo manufacturado no encontrado\"}");
             }
-            articulo.setId(id);
             return ResponseEntity.status(HttpStatus.OK).body(service.update(articulo));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al actualizar el artículo manufacturado. Por favor intente luego\"}");

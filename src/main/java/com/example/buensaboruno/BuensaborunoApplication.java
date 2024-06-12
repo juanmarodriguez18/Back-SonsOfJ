@@ -149,9 +149,10 @@ public class BuensaborunoApplication {
             // Crear Localidades
             Localidad localidad1 = Localidad.builder().nombre("Lujan de Cuyo").provincia(provincia1).build();
             Localidad localidad2 = Localidad.builder().nombre("Guaymallen").provincia(provincia1).build();
+            Localidad localidad5 = Localidad.builder().nombre("Ciudad").provincia(provincia1).build();
             Localidad localidad3 = Localidad.builder().nombre("Mar del Plata").provincia(provincia2).build();
             Localidad localidad4 = Localidad.builder().nombre("Mar de las Pampas").provincia(provincia2).build();
-            localidadRepository.saveAll(Arrays.asList(localidad1, localidad2, localidad3, localidad4));
+            localidadRepository.saveAll(Arrays.asList(localidad1, localidad2, localidad3, localidad4, localidad5));
             logger.info("-----> Terminada la creacion de Pais, Provincias y Localidades");
 
             // Crear Empresa, la Imagen y asociarla
@@ -217,14 +218,15 @@ public class BuensaborunoApplication {
             Categoria categoriaTragos = Categoria.builder().denominacion("Tragos").build();
             Categoria categoriaPizzas = Categoria.builder().denominacion("Pizzas").build();
             Categoria categoriaInsumos = Categoria.builder().denominacion("Insumos").build();
-            categoriaRepository.saveAll(Arrays.asList(categoriaBebidas, categoriaGaseosas, categoriaTragos, categoriaPizzas, categoriaInsumos));
+            Categoria categoriaSandwichs = Categoria.builder().denominacion("Sandwichs").build();
+            categoriaRepository.saveAll(Arrays.asList(categoriaBebidas, categoriaGaseosas, categoriaTragos, categoriaPizzas, categoriaInsumos, categoriaSandwichs));
 
             // Asignar Sub-Categorías
             categoriaBebidas.getSubCategorias().addAll(Arrays.asList(categoriaGaseosas, categoriaTragos));
             categoriaRepository.save(categoriaBebidas);
 
             // Asignar Categorías a sucursales
-            sucursalGuaymallen.getCategorias().addAll(Arrays.asList(categoriaInsumos, categoriaBebidas, categoriaGaseosas, categoriaTragos, categoriaPizzas));
+            sucursalGuaymallen.getCategorias().addAll(Arrays.asList(categoriaInsumos, categoriaBebidas, categoriaGaseosas, categoriaTragos, categoriaPizzas, categoriaSandwichs));
             sucursalRepository.save(sucursalGuaymallen);
             logger.info("-----> Terminada la creacion de Categorias, asignacion de Sub-Categorias y asignacion de Categorias a Sucursal");
 
@@ -245,8 +247,8 @@ public class BuensaborunoApplication {
                     .categoria(categoriaGaseosas)
                     .stockActual(1500.0)
                     .stockMinimo(10)
-                    .precioCompra(50.0)
-                    .precioVenta(70.0)
+                    .precioCompra(1500.0)
+                    .precioVenta(4000.0)
                     .build();
             ImagenArticulo imagenCoca = ImagenArticulo.builder()
                     .url("https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg")
@@ -262,8 +264,8 @@ public class BuensaborunoApplication {
                     .categoria(categoriaInsumos)
                     .stockActual(10000.0)
                     .stockMinimo(10)
-                    .precioCompra(40.0)
-                    .precioVenta(60.5)
+                    .precioCompra(1000.0)
+                    .precioVenta(1500.5)
                     .build();
             ImagenArticulo imagenHarina = ImagenArticulo.builder()
                     .url("https://mandolina.co/wp-content/uploads/2023/03/648366622-1024x683.jpg")
@@ -279,8 +281,8 @@ public class BuensaborunoApplication {
                     .categoria(categoriaInsumos)
                     .stockActual(10000.0)
                     .stockMinimo(10)
-                    .precioCompra(23.6)
-                    .precioVenta(66.6)
+                    .precioCompra(100.6)
+                    .precioVenta(150.6)
                     .build();
             ImagenArticulo imagenTomate = ImagenArticulo.builder()
                     .url("https://thefoodtech.com/wp-content/uploads/2020/06/Componentes-de-calidad-en-el-tomate-828x548.jpg")
@@ -296,8 +298,8 @@ public class BuensaborunoApplication {
                     .categoria(categoriaInsumos)
                     .stockActual(10000.0)
                     .stockMinimo(10)
-                    .precioCompra(23.6)
-                    .precioVenta(66.6)
+                    .precioCompra(200.6)
+                    .precioVenta(400.6)
                     .build();
             ImagenArticulo imagenQueso = ImagenArticulo.builder()
                     .url("https://superdepaso.com.ar/wp-content/uploads/2021/06/SANTAROSA-PATEGRAS-04.jpg")
@@ -305,9 +307,112 @@ public class BuensaborunoApplication {
                     .build();
             queso.getImagenesArticulo().add(imagenQueso);
 
+            // Crear Bife, la imagen y asociarla
+            ArticuloInsumo bife = ArticuloInsumo.builder()
+                    .denominacion("Bife Lomo")
+                    .unidadMedida(unidadMedidaCantidad)
+                    .esParaElaborar(true)
+                    .categoria(categoriaInsumos)
+                    .stockActual(10000.0)
+                    .stockMinimo(10)
+                    .precioCompra(400.0)
+                    .precioVenta(1500.0)
+                    .build();
+            ImagenArticulo imagenBife = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/jSTS7nCq/bifelomo.jpg")
+                    .articulo(bife)
+                    .build();
+            bife.getImagenesArticulo().add(imagenBife);
+
+            // Crear Medallon de carne, la imagen y asociarla
+            ArticuloInsumo medallonCarne = ArticuloInsumo.builder()
+                    .denominacion("Medallón de carne")
+                    .unidadMedida(unidadMedidaCantidad)
+                    .esParaElaborar(true)
+                    .categoria(categoriaInsumos)
+                    .stockActual(10000.0)
+                    .stockMinimo(10)
+                    .precioCompra(300.0)
+                    .precioVenta(1200.0)
+                    .build();
+            ImagenArticulo imagenMedallon = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/FHxsgFJy/medallon-carne-cruda.jpg")
+                    .articulo(medallonCarne)
+                    .build();
+            medallonCarne.getImagenesArticulo().add(imagenMedallon);
+
+            // Crear pan de papa, la imagen y asociarla
+            ArticuloInsumo panHamburguesa = ArticuloInsumo.builder()
+                    .denominacion("Pan de Hamburguesa")
+                    .unidadMedida(unidadMedidaCantidad)
+                    .esParaElaborar(true)
+                    .categoria(categoriaInsumos)
+                    .stockActual(10000.0)
+                    .stockMinimo(10)
+                    .precioCompra(200.0)
+                    .precioVenta(800.0)
+                    .build();
+            ImagenArticulo imagenPanHamburguesa = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/FRYr4jCp/pan-papa.jpg")
+                    .articulo(panHamburguesa)
+                    .build();
+            panHamburguesa.getImagenesArticulo().add(imagenPanHamburguesa);
+
+            // Crear pan arabe, la imagen y asociarla
+            ArticuloInsumo panArabe = ArticuloInsumo.builder()
+                    .denominacion("Pan Árabe")
+                    .unidadMedida(unidadMedidaCantidad)
+                    .esParaElaborar(true)
+                    .categoria(categoriaInsumos)
+                    .stockActual(10000.0)
+                    .stockMinimo(10)
+                    .precioCompra(200.0)
+                    .precioVenta(800.0)
+                    .build();
+            ImagenArticulo imagenPanArabe = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/x8H9k92b/panarabe.jpg")
+                    .articulo(panArabe)
+                    .build();
+            panArabe.getImagenesArticulo().add(imagenPanArabe);
+
+            // Crear panceta, la imagen y asociarla
+            ArticuloInsumo panceta = ArticuloInsumo.builder()
+                    .denominacion("Panceta Ahumada")
+                    .unidadMedida(unidadMedidaCantidad)
+                    .esParaElaborar(true)
+                    .categoria(categoriaInsumos)
+                    .stockActual(10000.0)
+                    .stockMinimo(10)
+                    .precioCompra(300.0)
+                    .precioVenta(900.0)
+                    .build();
+            ImagenArticulo imagenPanceta = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/NMZgf5Wc/panceta-ahumada.jpg")
+                    .articulo(panceta)
+                    .build();
+            panceta.getImagenesArticulo().add(imagenPanceta);
+
+            // Crear queso cheddar, la imagen y asociarla
+            ArticuloInsumo cheddar = ArticuloInsumo.builder()
+                    .denominacion("Cheddar")
+                    .unidadMedida(unidadMedidaCantidad)
+                    .esParaElaborar(true)
+                    .categoria(categoriaInsumos)
+                    .stockActual(10000.0)
+                    .stockMinimo(10)
+                    .precioCompra(350.0)
+                    .precioVenta(600.0)
+                    .build();
+            ImagenArticulo imagenCheddar = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/fW0zqf9T/queso-cheddar.jpg")
+                    .articulo(cheddar)
+                    .build();
+            cheddar.getImagenesArticulo().add(imagenCheddar);
+
             // Guardar Articulos Insumos e Imagenes
-            articuloInsumoRepository.saveAll(Arrays.asList(cocaCola, harina, tomate, queso));
-            imagenArticuloRepository.saveAll(Arrays.asList(imagenCoca, imagenHarina, imagenTomate, imagenQueso));
+            articuloInsumoRepository.saveAll(Arrays.asList(cocaCola, harina, tomate, queso, bife, medallonCarne, panHamburguesa, panArabe, panceta, cheddar));
+            imagenArticuloRepository.saveAll(Arrays.asList(imagenCoca, imagenHarina, imagenTomate, imagenQueso, imagenBife, imagenMedallon,
+                    imagenPanHamburguesa, imagenPanArabe, imagenPanceta, imagenCheddar));
             logger.info("-----> Terminada la creacion de Articulos Insumos");
 
             // Crear Articulos Manufacturados
@@ -316,7 +421,7 @@ public class BuensaborunoApplication {
                     .denominacion("Pizza Muzarella")
                     .descripcion("Una pizza clasica")
                     .unidadMedida(unidadMedidaPorciones)
-                    .precioVenta(130.0)
+                    .precioVenta(13000.0)
                     .tiempoEstimadoMinutos(15)
                     .preparacion("Esto se prepara asi")
                     .categoria(categoriaPizzas)
@@ -344,7 +449,7 @@ public class BuensaborunoApplication {
                     .denominacion("Pizza Napolitana")
                     .descripcion("Una pizza clasica con tomate")
                     .unidadMedida(unidadMedidaPorciones)
-                    .precioVenta(150.0)
+                    .precioVenta(15000.0)
                     .tiempoEstimadoMinutos(15)
                     .preparacion("Esto se prepara asi")
                     .categoria(categoriaPizzas)
@@ -372,14 +477,88 @@ public class BuensaborunoApplication {
                     .build();
             pizzaNapolitana.setArticuloManufacturadoDetalles(Set.of(detalleHarinaPizzaNapolitana, detalleQuesoPizzaNapolitana, detalleTomatePizzaNapolitana));
 
+            // Crear Hamburguesa, la imagen y asociarla
+            ArticuloManufacturado hamburguesa = ArticuloManufacturado.builder()
+                    .denominacion("Doble bacon cheeseburguer")
+                    .descripcion("Hamburguesa doble con cuadruple queso cheddar y panceta ahumada")
+                    .unidadMedida(unidadMedidaPorciones)
+                    .precioVenta(8500.0)
+                    .tiempoEstimadoMinutos(25)
+                    .preparacion("Se doran los medallones de carne en la plancha, se dan vuelta y se les pone el cheddar")
+                    .categoria(categoriaSandwichs)
+                    .build();
+            ImagenArticulo imagenHamburguesa = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/0N25tgpL/juanburguesa.jpg")
+                    .articulo(hamburguesa)
+                    .build();
+            hamburguesa.getImagenesArticulo().add(imagenHamburguesa);
+            // Crear Detalles de Hamburguesa y asociarla
+            ArticuloManufacturadoDetalle detallePanHamburguesa = ArticuloManufacturadoDetalle.builder()
+                    .cantidad(1)
+                    .articuloInsumo(panHamburguesa)
+                    .articuloManufacturado(hamburguesa)
+                    .build();
+            ArticuloManufacturadoDetalle detalleMedallonCarne = ArticuloManufacturadoDetalle.builder()
+                    .cantidad(2)
+                    .articuloInsumo(medallonCarne)
+                    .articuloManufacturado(hamburguesa)
+                    .build();
+            ArticuloManufacturadoDetalle detalleCheddar = ArticuloManufacturadoDetalle.builder()
+                    .cantidad(4)
+                    .articuloInsumo(cheddar)
+                    .articuloManufacturado(hamburguesa)
+                    .build();
+            ArticuloManufacturadoDetalle detallePanceta = ArticuloManufacturadoDetalle.builder()
+                    .cantidad(4)
+                    .articuloInsumo(panceta)
+                    .articuloManufacturado(hamburguesa)
+                    .build();
+            hamburguesa.setArticuloManufacturadoDetalles(Set.of(detallePanHamburguesa, detalleMedallonCarne, detalleCheddar, detallePanceta));
+
+            // Crear Lomo, la imagen y asociarla
+            ArticuloManufacturado lomito = ArticuloManufacturado.builder()
+                    .denominacion("Lomito con papas")
+                    .descripcion("Un sandwich de lomo en pan árabe con papas")
+                    .unidadMedida(unidadMedidaPorciones)
+                    .precioVenta(10500.0)
+                    .tiempoEstimadoMinutos(30)
+                    .preparacion("Se cocinan los bifes de lomo a la plancha con queso y se ponen en el pan")
+                    .categoria(categoriaSandwichs)
+                    .build();
+            ImagenArticulo imagenLomito = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/5t74TPgj/lomo-con-papas.jpg")
+                    .articulo(lomito)
+                    .build();
+            lomito.getImagenesArticulo().add(imagenLomito);
+            // Crear Detalles de lomito y asociarla
+            ArticuloManufacturadoDetalle detallePanArabe = ArticuloManufacturadoDetalle.builder()
+                    .cantidad(1)
+                    .articuloInsumo(panArabe)
+                    .articuloManufacturado(lomito)
+                    .build();
+            ArticuloManufacturadoDetalle detalleBifeLomo = ArticuloManufacturadoDetalle.builder()
+                    .cantidad(2)
+                    .articuloInsumo(bife)
+                    .articuloManufacturado(lomito)
+                    .build();
+            ArticuloManufacturadoDetalle detalleQuesoLomito = ArticuloManufacturadoDetalle.builder()
+                    .cantidad(2)
+                    .articuloInsumo(queso)
+                    .articuloManufacturado(lomito)
+                    .build();
+            lomito.setArticuloManufacturadoDetalles(Set.of(detallePanArabe, detalleBifeLomo, detalleQuesoLomito));
+
             // Guardar los Artículos Manufacturados y los Artículos Manufacturados Detalles e Imagenes
-            articuloManufacturadoRepository.saveAll(Arrays.asList(pizzaMuzarella, pizzaNapolitana));
-            articuloManufacturadoDetalleRepository.saveAll(Arrays.asList(detalleHarinaPizzaMuzarella, detalleHarinaPizzaNapolitana));
-            imagenArticuloRepository.saveAll(Arrays.asList(imagenPizzaMuzarella, imagenPizzaNapolitana));
+            articuloManufacturadoRepository.saveAll(Arrays.asList(pizzaMuzarella, pizzaNapolitana, hamburguesa, lomito));
+            articuloManufacturadoDetalleRepository.saveAll(Arrays.asList(detalleHarinaPizzaMuzarella, detalleHarinaPizzaNapolitana, detallePanHamburguesa, detalleMedallonCarne,
+                    detalleCheddar, detallePanceta, detallePanArabe, detalleBifeLomo, detalleQuesoLomito));
+            imagenArticuloRepository.saveAll(Arrays.asList(imagenPizzaMuzarella, imagenPizzaNapolitana, imagenHamburguesa, imagenLomito));
 
             // Asignar Pizzas a Categoria Pizzas
             categoriaPizzas.getArticulos().addAll(Arrays.asList(pizzaMuzarella, pizzaNapolitana));
             categoriaRepository.save(categoriaPizzas);
+            categoriaSandwichs.getArticulos().addAll(Arrays.asList(hamburguesa, lomito));
+            categoriaRepository.save(categoriaSandwichs);
             logger.info("-----> Terminada la creacion de Articulos Manufacturados (Pizzas) y asignacion a la Categoria Pizzas");
 
             // Crear Promociones
@@ -454,12 +633,20 @@ public class BuensaborunoApplication {
             //Crea un cliente y un usuario
             ImagenCliente imagenCliente = ImagenCliente.builder().url("https://hips.hearstapps.com/hmg-prod/images/la-la-land-final-1638446140.jpg").build();
             imagenClienteRepository.save(imagenCliente);
+            ImagenCliente imagenCliente2 = ImagenCliente.builder().url("https://i.postimg.cc/FF2jwpCP/morro.jpg").build();
+            imagenClienteRepository.save(imagenCliente2);
             ImagenEmpleado imagenEmpleado = ImagenEmpleado.builder().url("https://hips.hearstapps.com/hmg-prod/images/la-la-land-final-1638446140.jpg").build();
             imagenEmpleadoRepository.save(imagenEmpleado);
             Domicilio domicilioCliente = Domicilio.builder().cp(5519).calle("Cangallo").numero(800).piso(0).nroDpto(1).localidad(localidad1).build();
             domicilioRepository.save(domicilioCliente);
+            Domicilio domicilioCliente2 = Domicilio.builder().cp(5500).calle("Necochea").numero(384).piso(0).nroDpto(0).localidad(localidad5).build();
+            domicilioRepository.save(domicilioCliente2);
+            Domicilio domicilioCliente3 = Domicilio.builder().cp(5500).calle("Gutierrez").numero(434).piso(4).nroDpto(402).localidad(localidad5).build();
+            domicilioRepository.save(domicilioCliente3);
             UsuarioCliente usuarioCliente = UsuarioCliente.builder().username("sebastian").auth0Id("9565a49d-ecc1-4f4e-adea-6cdcb7edc4a3").build();
             usuarioClienteRepository.save(usuarioCliente);
+            UsuarioCliente usuarioCliente2 = UsuarioCliente.builder().username("morro").auth0Id("9565a49d-ecc1-4f4e-adea-4cdcb5edc6a7").build();
+            usuarioClienteRepository.save(usuarioCliente2);
             UsuarioEmpleado usuarioEmpleado = UsuarioEmpleado.builder().username("martin").auth0Id("9565a49d-ecc1-4f4e-adea-6cdcb7edc43a").build();
             usuarioEmpleadoRepository.save(usuarioEmpleado);
 
@@ -474,6 +661,19 @@ public class BuensaborunoApplication {
             //cliente.setEstaActivo(true);
             cliente.getDomicilios().add(domicilioCliente);
             clienteRepository.save(cliente);
+
+            Cliente cliente2 = new Cliente();
+
+            cliente2.setImagenCliente(imagenCliente2);
+            cliente2.setEmail("morro_garcia@gmail.com");
+            cliente2.setNombre("Santiago");
+            cliente2.setApellido("Garcia");
+            cliente2.setUsuarioCliente(usuarioCliente2);
+            cliente2.setTelefono("2614578996");
+            //cliente.setEstaActivo(true);
+            cliente2.getDomicilios().add(domicilioCliente2);
+            cliente2.getDomicilios().add(domicilioCliente3);
+            clienteRepository.save(cliente2);
 
             Empleado empleado = new Empleado();
 
@@ -493,10 +693,10 @@ public class BuensaborunoApplication {
 
 
             //Crea un pedido para el cliente
-            Pedido pedido = Pedido.builder().fechaPedido(LocalDate.now()).horaEstimadaFinalizacion(LocalDateTime.now()).total(300.0).totalCosto(170.6).estado(Estado.PREPARACION).formaPago(FormaPago.MERCADO_PAGO).tipoEnvio(TipoEnvio.DELIVERY).sucursal(sucursalGuaymallen).domicilio(domicilioCliente).build();
+            Pedido pedido = Pedido.builder().fechaPedido(LocalDate.now()).horaEstimadaFinalizacion(LocalDateTime.now()).total(17000.0).totalCosto(170.6).estado(Estado.PREPARACION).formaPago(FormaPago.MERCADO_PAGO).tipoEnvio(TipoEnvio.DELIVERY).sucursal(sucursalGuaymallen).domicilio(domicilioCliente).build();
 
-            PedidoDetalle detallePedido1 = PedidoDetalle.builder().articulo(pizzaMuzarella).cantidad(1).subTotal(200.0).pedido(pedido).build();
-            PedidoDetalle detallePedido2 = PedidoDetalle.builder().articulo(cocaCola).cantidad(2).subTotal(100.0).pedido(pedido).build();
+            PedidoDetalle detallePedido1 = PedidoDetalle.builder().articulo(pizzaMuzarella).cantidad(1).subTotal(13000.0).pedido(pedido).build();
+            PedidoDetalle detallePedido2 = PedidoDetalle.builder().articulo(cocaCola).cantidad(1).subTotal(4000.0).pedido(pedido).build();
 
             pedido.getPedidoDetalles().add(detallePedido1);
             pedido.getPedidoDetalles().add(detallePedido2);
