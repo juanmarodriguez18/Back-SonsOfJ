@@ -1,11 +1,11 @@
 package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.ArticuloInsumo;
+import com.example.buensaboruno.domain.entities.ImagenArticulo;
 import com.example.buensaboruno.servicesImpl.ArticuloInsumoServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 
@@ -35,8 +35,16 @@ public class ArticuloInsumoController extends BaseControllerImpl<ArticuloInsumo,
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody ArticuloInsumo insumo) {
         try {
-            insumo.getImagenesArticulo().forEach(imagenArticulo -> imagenArticulo.setArticulo(insumo));
-            return ResponseEntity.status(HttpStatus.OK).body(service.save(insumo));
+            // Asignar el ArticuloInsumo a cada ImagenArticulo
+            for (ImagenArticulo imagenArticulo : insumo.getImagenesArticulo()) {
+                imagenArticulo.setArticulo(insumo);
+            }
+
+            // Guardar el ArticuloInsumo con sus imagenes
+            ArticuloInsumo savedInsumo = service.save(insumo);
+
+            // Retornar la respuesta con el ArticuloInsumo guardado
+            return ResponseEntity.status(HttpStatus.OK).body(savedInsumo);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar el insumo. Por favor intente luego\"}");
         }
