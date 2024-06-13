@@ -98,6 +98,9 @@ public class BuensaborunoApplication {
     private PedidoRepository pedidoRepository;
 
     @Autowired
+    private PedidoDetalleRepository pedidoDetalleRepository;
+
+    @Autowired
     private FacturaRepository facturaRepository;
 
     public static void main(String[] args) {
@@ -132,7 +135,8 @@ public class BuensaborunoApplication {
                            ImagenEmpleadoRepository imagenEmpleadoRepository,
                            UsuarioEmpleadoRepository usuarioEmpleadoRepository,
                            PedidoRepository pedidoRepository,
-                           FacturaRepository facturaRepository, PedidoDetalleRepository pedidoDetalleRepository)
+                           PedidoDetalleRepository pedidoDetalleRepository,
+                           FacturaRepository facturaRepository)
     {
         return args -> {
             logger.info("----------------ESTOY----FUNCIONANDO---------------------");
