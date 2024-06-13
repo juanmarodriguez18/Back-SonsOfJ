@@ -16,7 +16,6 @@ import lombok.*;
 @Builder
 public class ImagenArticulo extends Base{
 
-    @Column(columnDefinition = "TEXT")
     private String url;
 
     @ManyToOne
