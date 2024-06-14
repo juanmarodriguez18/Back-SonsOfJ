@@ -711,18 +711,11 @@ public class BuensaborunoApplication {
                     .mpMerchantOrderId(random.nextInt(1000)) // Se asume un rango máximo de 1000
                     .mpPreferenceId("MP-" + random.nextInt(10000))  // Se asume un rango máximo de 10000
                     .mpPaymentType("Tipo" + random.nextInt(10)) // Se asume un rango máximo de 10
-                    .formaPago(FormaPago.EFECTIVO).totalVenta(random.nextDouble() * 1000).build();
+                    .formaPago(FormaPago.EFECTIVO).totalVenta(random.nextDouble() * 1000)
+                    .pedido(pedido).build();
 
-            Factura facturaBuilder2 = Factura.builder().fechaFacturacion(LocalDate.now()).mpPaymentId(random.nextInt(1000))  // Se asume un rango máximo de 1000
-                    .mpMerchantOrderId(random.nextInt(1000)) // Se asume un rango máximo de 1000
-                    .mpPreferenceId("MP-" + random.nextInt(10000))  // Se asume un rango máximo de 10000
-                    .mpPaymentType("Tipo" + random.nextInt(10)) // Se asume un rango máximo de 10
-                    .formaPago(FormaPago.EFECTIVO).totalVenta(random.nextDouble() * 1000).build();
 
             facturaRepository.save(facturaBuilder);
-            facturaRepository.save(facturaBuilder2);
-
-            pedido.setFactura(facturaBuilder);
 
             pedidoRepository.save(pedido);
 

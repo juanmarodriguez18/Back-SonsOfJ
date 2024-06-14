@@ -35,8 +35,6 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     @Autowired
     ArticuloManufacturadoRepository articuloManufacturadoRepository;
 
-    @Autowired
-    FacturaRepository facturaRepository; // Servicio de Factura
 
     public PedidoServiceImpl(BaseRepository<Pedido, Long> baseRepository) {
         super(baseRepository);
@@ -86,16 +84,6 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
         request.setEstado(Estado.PENDIENTE); // Asignar el estado inicial
 
         request.setFechaPedido(LocalDate.now()); // Asignar la fecha
-
-        // Crear la factura
-        Factura factura = new Factura();
-        factura.setFechaFacturacion(LocalDate.now());
-        factura.setFormaPago(request.getFormaPago());
-        factura.setTotalVenta(request.getTotal()); // Supongo que el total del pedido es el total de la factura
-
-        // Guardar la factura y asociarla al pedido
-        factura = facturaRepository.save(factura);
-        request.setFactura(factura);
 
         return pedidoRepository.save(request); // Guardar el nuevo pedido
     }
