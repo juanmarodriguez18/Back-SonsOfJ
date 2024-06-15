@@ -2,6 +2,7 @@ package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.*;
 import com.example.buensaboruno.servicesImpl.ArticuloManufacturadoServiceImpl;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +32,8 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody ArticuloManufacturado articulo) {
         try {
-            articulo.getImagenesArticulo().forEach(imagenArticulo -> imagenArticulo.setArticulo(articulo));
-            articulo.getArticuloManufacturadoDetalles().forEach(articuloManufacturadoDetalle -> articuloManufacturadoDetalle.setArticuloManufacturado(articulo));
-            return ResponseEntity.status(HttpStatus.OK).body(service.save(articulo));
+            ArticuloManufacturado savedArticulo = service.save(articulo);
+            return ResponseEntity.status(HttpStatus.OK).body(savedArticulo);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar el artículo manufacturado. Por favor intente luego\"}");
         }
@@ -43,13 +43,10 @@ public class ArticuloManufacturadoController extends BaseControllerImpl<Articulo
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ArticuloManufacturado articulo) {
         try {
-            articulo.getImagenesArticulo().forEach(imagenArticulo -> imagenArticulo.setArticulo(articulo));
-            articulo.getArticuloManufacturadoDetalles().forEach(articuloManufacturadoDetalle -> articuloManufacturadoDetalle.setArticuloManufacturado(articulo));
-            ArticuloManufacturado searchedEntity = service.findById(id);
-            if (searchedEntity == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Artículo manufacturado no encontrado\"}");
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(service.update(articulo));
+            ArticuloManufacturado updatedArticulo = service.update(articulo);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedArticulo);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Artículo manufacturado no encontrado\"}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al actualizar el artículo manufacturado. Por favor intente luego\"}");
         }
