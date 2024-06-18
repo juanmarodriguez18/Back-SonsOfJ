@@ -1,6 +1,7 @@
 package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.Pedido;
+import com.example.buensaboruno.domain.enums.Estado;
 import com.example.buensaboruno.servicesImpl.PedidoServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -56,7 +57,6 @@ public class PedidoController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Pedido pedido) {
         try {
-            pedido.setId(id);
             Pedido updatedPedido = service.update(pedido, id);
             return ResponseEntity.status(HttpStatus.OK).body(updatedPedido);
         } catch (RuntimeException e) {
@@ -78,4 +78,24 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener el pedido. Por favor intente luego\"}");
         }
     }
+
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<?> updateEstado(@PathVariable Long id, @RequestBody String estadoString) {
+        try {
+            Estado estado = Estado.valueOf(estadoString); // Convertir el String a enum Estado
+            Pedido pedido = service.findById(id);
+            if (pedido == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Pedido no encontrado\"}");
+            }
+            pedido.setEstado(estado);
+            service.update(pedido); // No es necesario pasar el id como parámetro, ya que ya se tiene el pedido con ese id.
+            return ResponseEntity.status(HttpStatus.OK).body(pedido);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Estado inválido: " + estadoString + "\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al actualizar el estado del pedido. Por favor intente luego\"}");
+        }
+    }
+
+
 }

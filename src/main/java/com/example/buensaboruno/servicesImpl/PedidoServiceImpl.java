@@ -168,10 +168,17 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
 
 
     public Pedido update(Pedido request, Long id) {
-        if (id != null || request != null) {
-            throw new RuntimeException("El pedido no se puede editar, si desea realizar un cambio, elimine el pedido y vuelva a crearlo");
+        Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
+        if (optionalPedido.isEmpty()) {
+            throw new RuntimeException("Pedido no encontrado con ID: " + id);
         }
-        return pedidoRepository.save(request);
+
+        Pedido pedido = optionalPedido.get();
+        pedido.setEstado(request.getEstado()); // Actualizar el estado del pedido
+        // Aquí puedes añadir más actualizaciones si es necesario, por ejemplo:
+        // pedido.setOtrosCampos(request.getOtrosCampos());
+
+        return pedidoRepository.save(pedido);
     }
 
 
@@ -187,5 +194,6 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
 
         pedidoRepository.delete(pedido);
     }
+
 
 }
