@@ -35,10 +35,11 @@ public class FacturaController extends BaseControllerImpl<Factura, FacturaServic
     public void emitirFactura(@RequestBody Factura factura, @RequestParam String emailCliente) throws Exception {
         // Persistir la factura
         Factura facturaGuardada = facturaService.save(factura);
+        System.out.println("facturaGuardada.getId() = " + facturaGuardada.getId());
         //Factura factura = facturaService.findById(id);
 
         // Generar el PDF
-        byte[] pdfContent = pdfService.generarFacturaPdf(factura);
+        byte[] pdfContent = pdfService.generarFacturaPdf(facturaGuardada);
 
         // Enviar el PDF por email
         emailService.facturaPorEmail(emailCliente, pdfContent);

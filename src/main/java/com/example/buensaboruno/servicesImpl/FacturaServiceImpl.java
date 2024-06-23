@@ -38,8 +38,7 @@ public class FacturaServiceImpl extends BaseServiceImpl<Factura, Long> implement
 
     @Override
     public Factura save(Factura factura) {
-        facturaRepository.save(factura);
-        return factura;
+        return facturaRepository.save(factura);
     }
 
 }

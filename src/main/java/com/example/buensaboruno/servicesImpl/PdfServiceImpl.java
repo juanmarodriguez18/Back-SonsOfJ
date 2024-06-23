@@ -9,6 +9,7 @@ import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import org.apache.poi.xddf.usermodel.text.TextAlignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +29,10 @@ public class PdfServiceImpl implements PdfService  {
 
     @Override
     public byte[] generarFacturaPdf(Factura factura) throws IOException, DocumentException {
-        Optional<Factura> optionalFactura = facturaRepository.findById(factura.getId());
+        System.out.println("factura: " + factura.getId());
+        //Optional<Factura> optionalFactura = facturaRepository.findById(factura.getId());
 
-        if(optionalFactura.isEmpty()) {
+        if(factura.getPedido() == null || factura.getId() == 0) {
             throw new RuntimeException("No se encuentra la factura.");
         }
 
@@ -49,7 +51,7 @@ public class PdfServiceImpl implements PdfService  {
 
         //Cerrar documento
         documento.close();
-
+        System.out.println("pedido = " + pedido.getId());
         return baos.toByteArray();
     }
 
@@ -80,9 +82,9 @@ public class PdfServiceImpl implements PdfService  {
         PdfPCell empresa = new PdfPCell(new Phrase(nombreEmpresa, titulo));
         empresa.setBorder(Rectangle.NO_BORDER);
         empresa.setHorizontalAlignment(Element.ALIGN_CENTER);
-        PdfPCell sucursal = new PdfPCell(new Phrase(nombreSucursal));
+        PdfPCell sucursal = new PdfPCell(new Phrase("Sucursal " + nombreSucursal));
         sucursal.setBorder(Rectangle.NO_BORDER);
-        PdfPCell nroCuit = new PdfPCell(new Phrase(cuit));
+        PdfPCell nroCuit = new PdfPCell(new Phrase("CUIT: " + cuit));
         nroCuit.setBorder(Rectangle.NO_BORDER);
         PdfPCell domicilio = new PdfPCell(new Phrase(direccion));
         domicilio.setBorder(Rectangle.NO_BORDER);
@@ -110,8 +112,8 @@ public class PdfServiceImpl implements PdfService  {
     //---- Datos cliente ----//
     private void configurarDatosCliente(Document doc, Pedido pedido) throws DocumentException, MalformedURLException, IOException {
         //Inicializar datos
-        String nombreCliente = pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido();
-        String direccion = pedido.getDomicilio().getCalle() + " " + pedido.getDomicilio().getNumero() + (!pedido.getDomicilio().getPiso().toString().isEmpty() ? " - piso " + pedido.getDomicilio().getPiso() + " - dpto. " + pedido.getDomicilio().getNroDpto() : "");
+        String nombreCliente = "Nombre: " + pedido.getCliente().getNombre() + " " + pedido.getCliente().getApellido();
+        String direccion = "Dirección: " + pedido.getDomicilio().getCalle() + " " + pedido.getDomicilio().getNumero() + (!pedido.getDomicilio().getPiso().toString().isEmpty() ? " - piso " + pedido.getDomicilio().getPiso() + " - dpto. " + pedido.getDomicilio().getNroDpto() : "");
 
         //Crear tabla
         PdfPTable tablaCliente = new PdfPTable(1);
@@ -141,12 +143,12 @@ public class PdfServiceImpl implements PdfService  {
         tablaDetalle.setWidthPercentage(100f);
 
         //Crear celdas de encabezado
-        PdfPCell tituloCantidad = new PdfPCell(new Phrase("Cantidad"));
-        PdfPCell tituloDescripcion = new PdfPCell(new Phrase("Descripción"));
-        PdfPCell tituloPrecio = new PdfPCell(new Phrase("Subtot"));
-        tablaDetalle.addCell(tituloCantidad);
-        tablaDetalle.addCell(tituloDescripcion);
-        tablaDetalle.addCell(tituloPrecio);
+        PdfPCell tituloCantidad = new PdfPCell(new Phrase("Cantidad", textoBold));
+        tituloCantidad.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPCell tituloDescripcion = new PdfPCell(new Phrase("Descripción", textoBold));
+        tituloDescripcion.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPCell tituloPrecio = new PdfPCell(new Phrase("Subtotal", textoBold));
+        tituloPrecio.setHorizontalAlignment(Element.ALIGN_CENTER);
 
         //Crear celdas con los datos
         tablaDetalle.addCell(tituloCantidad);
@@ -154,15 +156,24 @@ public class PdfServiceImpl implements PdfService  {
         tablaDetalle.addCell(tituloPrecio);
 
         for(PedidoDetalle detalle : pedido.getPedidoDetalles()) {
-            tablaDetalle.addCell(new PdfPCell(new Phrase(detalle.getCantidad().toString())));
-            tablaDetalle.addCell(new PdfPCell(new Phrase(detalle.getArticulo().getDenominacion())));
-            tablaDetalle.addCell(new PdfPCell(new Phrase(String.valueOf(detalle.getSubTotal() * detalle.getCantidad()))));
+            PdfPCell cantidadCell = new PdfPCell(new Phrase(detalle.getCantidad().toString(), texto));
+            cantidadCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            tablaDetalle.addCell(cantidadCell);
+            PdfPCell descripcionCell = new PdfPCell(new Phrase(detalle.getArticulo().getDenominacion(), texto));
+            tablaDetalle.addCell(descripcionCell);
+            PdfPCell subtotCell = new PdfPCell(new Phrase(String.valueOf(detalle.getSubTotal()), texto));
+            subtotCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            tablaDetalle.addCell(subtotCell);
             total += detalle.getSubTotal();
         }
 
         tablaDetalle.addCell(new Phrase(" "));
-        tablaDetalle.addCell(new Phrase(" "));
-        tablaDetalle.addCell(new Phrase(String.valueOf(total)));
+        PdfPCell totalCell = new PdfPCell(new Phrase("TOTAL", textoBold));
+        totalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        tablaDetalle.addCell(totalCell);
+        PdfPCell totCell = new PdfPCell(new Phrase(String.valueOf(total), texto));
+        totCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        tablaDetalle.addCell(totCell);
 
         doc.add(tablaDetalle);
     }

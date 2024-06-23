@@ -27,6 +27,7 @@ public class EmailServiceImpl implements EmailService {
         helper.addAttachment("factura.pdf", new ByteArrayResource(pdfContent));
 
         mailSender.send(message);
+        System.out.println("helper.getEncoding() = " + helper.getEncoding());
     }
 
 }
