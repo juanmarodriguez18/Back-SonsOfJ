@@ -3,7 +3,6 @@ package com.example.buensaboruno.domain.entities;
 import com.example.buensaboruno.domain.enums.TipoPromocion;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,7 +16,6 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-//@Audited
 public class Promocion extends Base{
     private String denominacion;
     private LocalDate fechaDesde;
@@ -28,11 +26,9 @@ public class Promocion extends Base{
     private Double precioPromocional;
     private TipoPromocion tipoPromocion;
 
-    @OneToMany
-    @JoinColumn(name = "promocion_id")
+    @OneToMany(mappedBy = "promocion", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
-    @NotAudited
-    private Set<ImagenPromocion> imagenesPromocion = new HashSet<>();
+    protected Set<ImagenPromocion> imagenesPromocion = new HashSet<>();
 
     @ManyToMany (mappedBy = "promociones")
     @Builder.Default
