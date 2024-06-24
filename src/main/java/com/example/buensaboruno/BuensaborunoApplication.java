@@ -574,10 +574,15 @@ public class BuensaborunoApplication {
                     .horaDesde(LocalTime.of(0, 0))
                     .horaHasta(LocalTime.of(23, 59))
                     .descripcionDescuento("Dia 13, 14 y 15 con descuento - 2 Pizzas Muzarella + 2 Coca Cola 1.5lts")
-                    .precioPromocional(150.0)
+                    .precioPromocional(300.0)
                     .tipoPromocion(TipoPromocion.PROMOCION)
                     .build();
             // ACA VA LA CREACION DE "ImagenPromocion" CON LA ASOCIACION A LA PROMO
+            ImagenPromocion imgPromoDiaEnamorados = ImagenPromocion.builder()
+                    .url("https://i.postimg.cc/yNKpVRr3/promo-dia-enamorados.webp")
+                    .promocion(promoDiaEnamorados)
+                    .build();
+            promoDiaEnamorados.getImagenesPromocion().add(imgPromoDiaEnamorados);
             // Crear Detalles de Promocion Dia de los Enamorados y asociarlos con la Promocion
             PromocionDetalle detallePromo1 = PromocionDetalle.builder()
                     .cantidad(2)
@@ -589,38 +594,45 @@ public class BuensaborunoApplication {
                     .build();
             promoDiaEnamorados.getPromocionDetalles().addAll(Arrays.asList(detallePromo1, detallePromo2));
 
-            // Guardar Promocion y los Detalles de Promocion
+            // Guardar Promocion, los Detalles de Promocion y la Imagen de Promocion
             promocionDetalleRepository.save(detallePromo1);
             promocionDetalleRepository.save(detallePromo2);
             promocionRepository.save(promoDiaEnamorados);
+            imagenPromocionRepository.save(imgPromoDiaEnamorados);
 
             // Crear Promocion Pizza + Coca
-            Promocion promoPizzaConCocas = Promocion.builder()
-                    .denominacion("Pizza + Cocas")
+            Promocion promoPizzaConCoca = Promocion.builder()
+                    .denominacion("Pizza + Coca")
                     .fechaDesde(LocalDate.of(2024, 1, 1))
                     .fechaHasta(LocalDate.of(2024, 12, 31))
                     .horaDesde(LocalTime.of(20, 0))
                     .horaHasta(LocalTime.of(23, 0))
-                    .descripcionDescuento("Pizza Napolitana + 2 Coca Cola 1.5lts")
+                    .descripcionDescuento("Pizza Napolitana + Coca Cola 1.5lts")
                     .precioPromocional(100.0)
                     .tipoPromocion(TipoPromocion.PROMOCION)
                     .build();
             // ACA VA LA CREACION DE "ImagenPromocion" CON LA ASOCIACION A LA PROMO
+            ImagenPromocion imgPromoPizzaconCoca = ImagenPromocion.builder()
+                    .url("https://i.postimg.cc/JtwcpwfH/promo-pizza-con-coca.jpg")
+                    .promocion(promoPizzaConCoca)
+                    .build();
+            promoPizzaConCoca.getImagenesPromocion().add(imgPromoPizzaconCoca);
             // Crear Detalles de Promocion Pizza + Cocas y asociarlos con la Promocion
             PromocionDetalle detallePromo3 = PromocionDetalle.builder()
                     .cantidad(1)
                     .articulo(pizzaNapolitana)
                     .build();
             PromocionDetalle detallePromo4 = PromocionDetalle.builder()
-                    .cantidad(2)
+                    .cantidad(1)
                     .articulo(cocaCola)
                     .build();
-            promoPizzaConCocas.getPromocionDetalles().addAll(Arrays.asList(detallePromo3, detallePromo4));
+            promoPizzaConCoca.getPromocionDetalles().addAll(Arrays.asList(detallePromo3, detallePromo4));
 
-            // Guardar Promocion y los Detalles de Promocion
+            // Guardar Promocion, los Detalles de Promocion y la Imagen de Promocion
             promocionDetalleRepository.save(detallePromo3);
             promocionDetalleRepository.save(detallePromo4);
-            promocionRepository.save(promoPizzaConCocas);
+            promocionRepository.save(promoPizzaConCoca);
+            imagenPromocionRepository.save(imgPromoPizzaconCoca);
             logger.info("-----> Terminada la creacion de Promociones");
             logger.info("--------------------------------------------------->");
             logger.info("--------------------------------------------------->");
