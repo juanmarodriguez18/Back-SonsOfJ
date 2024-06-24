@@ -58,5 +58,7 @@ public class Pedido extends Base{
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @OneToOne
+    private Factura factura;
 
 }
