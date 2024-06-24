@@ -55,11 +55,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.hibernate.orm:hibernate-envers:6.4.4.Final'
 
-
-	// SECURITY
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-  
 	// Apache POI dependencies
 	implementation 'org.apache.poi:poi:5.2.3'
 	implementation 'org.apache.poi:poi-ooxml:5.2.3'
