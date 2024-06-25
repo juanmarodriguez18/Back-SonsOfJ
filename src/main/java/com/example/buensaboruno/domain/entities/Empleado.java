@@ -26,6 +26,7 @@ public class Empleado extends Base {
     private String apellido;
     private String telefono;
     private String email;
+    private String clave;
     private LocalDate fechaNacimiento;
     private Rol tipoEmpleado;
 
@@ -38,9 +39,9 @@ public class Empleado extends Base {
     @NotAudited
     private ImagenEmpleado imagenEmpleado;
 
-    @OneToOne
+    /*@OneToOne
     @NotAudited
-    private UsuarioEmpleado usuarioEmpleado;
+    private UsuarioEmpleado usuarioEmpleado;*/
 
     @OneToMany(mappedBy = "empleado", cascade = CascadeType.REFRESH, orphanRemoval = true)
     @ToString.Exclude

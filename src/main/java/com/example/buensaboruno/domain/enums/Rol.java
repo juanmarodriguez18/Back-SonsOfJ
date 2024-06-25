@@ -4,6 +4,8 @@ public enum Rol {
 
     ADMIN,
     COCINERO,
-    CAJERO
+    CAJERO,
+    DELIVERY,
+    EMPLEADO_COMUN,
 
 }

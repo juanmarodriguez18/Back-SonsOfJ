@@ -10,8 +10,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173/") // Reemplaza esto con el origen de tu aplicación React
-                .allowedMethods("GET", "POST", "PUT", "DELETE","PATCH")
-                .allowedHeaders("*");
+                .allowedOrigins("http://localhost:5173") // Reemplaza esto con el origen de tu aplicación React
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
+
+        registry.addMapping("/auth/**")
+                .allowedOrigins("http://localhost:5173") // Reemplaza esto con el origen de tu aplicación React
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 }
