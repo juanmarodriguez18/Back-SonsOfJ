@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -102,6 +103,9 @@ public class BuensaborunoApplication {
 
     @Autowired
     private FacturaRepository facturaRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
         SpringApplication.run(BuensaborunoApplication.class, args);
@@ -651,8 +655,14 @@ public class BuensaborunoApplication {
             imagenClienteRepository.save(imagenCliente);
             ImagenCliente imagenCliente2 = ImagenCliente.builder().url("https://i.postimg.cc/FF2jwpCP/morro.jpg").build();
             imagenClienteRepository.save(imagenCliente2);
-            ImagenEmpleado imagenEmpleado = ImagenEmpleado.builder().url("https://hips.hearstapps.com/hmg-prod/images/la-la-land-final-1638446140.jpg").build();
+            ImagenEmpleado imagenEmpleado = ImagenEmpleado.builder().url("https://i.postimg.cc/wvJhXbm0/imagen-cajero.jpg").build();
             imagenEmpleadoRepository.save(imagenEmpleado);
+            ImagenEmpleado imagenAdmin = ImagenEmpleado.builder().url("https://i.postimg.cc/8zbVsy3g/messi-copa-del-mundo.jpg").build();
+            imagenEmpleadoRepository.save(imagenAdmin);
+            ImagenEmpleado imagenCocinero = ImagenEmpleado.builder().url("https://i.postimg.cc/Gp4P2ph0/cocinero.jpg").build();
+            imagenEmpleadoRepository.save(imagenCocinero);
+            ImagenEmpleado imagenDelivery = ImagenEmpleado.builder().url("https://i.postimg.cc/MGg7j8vn/delivery.jpg").build();
+            imagenEmpleadoRepository.save(imagenDelivery);
             Domicilio domicilioCliente = Domicilio.builder().cp(5519).calle("Cangallo").numero(800).piso(0).nroDpto(1).localidad(localidad1).build();
             domicilioRepository.save(domicilioCliente);
             Domicilio domicilioCliente2 = Domicilio.builder().cp(5500).calle("Necochea").numero(384).piso(0).nroDpto(0).localidad(localidad5).build();
@@ -692,20 +702,57 @@ public class BuensaborunoApplication {
             clienteRepository.save(cliente2);
 
             Empleado empleado = new Empleado();
-
-            empleado.setEmail("correoFalso@hotmail.com");
+            empleado.setEmail("cajero1@elbuensabor.com");
             empleado.setTipoEmpleado(Rol.CAJERO);
-            empleado.setNombre("CorreoFalso");
-            empleado.setApellido("Falsin");
-            empleado.setUsuarioEmpleado(usuarioEmpleado);
+            empleado.setNombre("Fernando");
+            empleado.setClave(passwordEncoder.encode("Cajero123"));
+            empleado.setApellido("Ferreira");
+            //empleado.setUsuarioEmpleado(usuarioEmpleado);
             empleado.setTelefono("2612151170");
-            //empleado.setEstaActivo(true);
+            empleado.setFechaNacimiento(LocalDate.of(1990, 11, 15));
             empleado.setImagenEmpleado(imagenEmpleado);
             empleado.setSucursal(sucursalGuaymallen);
-            empleado.setTipoEmpleado(Rol.ADMIN);
             sucursalGuaymallen.getEmpleados().add(empleado);
             empleadoRepository.save(empleado);
             logger.info("Empleado{}:", empleado);
+
+            Empleado admin = new Empleado();
+            admin.setEmail("admin1@elbuensabor.com");
+            admin.setTipoEmpleado(Rol.ADMIN);
+            admin.setNombre("Juanito");
+            admin.setClave(passwordEncoder.encode("Admin123"));
+            admin.setApellido("Rodriguez");
+            admin.setTelefono("2614578774");
+            admin.setFechaNacimiento(LocalDate.of(1987, 6, 24));
+            admin.setImagenEmpleado(imagenAdmin);
+            empleadoRepository.save(admin);
+            logger.info("Empleado{}:", admin);
+
+            Empleado cocinero = new Empleado();
+            cocinero.setEmail("cocinero1@elbuensabor.com");
+            cocinero.setTipoEmpleado(Rol.COCINERO);
+            cocinero.setNombre("Pepe");
+            cocinero.setClave(passwordEncoder.encode("Cocinero123"));
+            cocinero.setApellido("Cocinas");
+            cocinero.setTelefono("2614818774");
+            cocinero.setFechaNacimiento(LocalDate.of(1989, 3, 22));
+            cocinero.setImagenEmpleado(imagenCocinero);
+            empleadoRepository.save(cocinero);
+            logger.info("Empleado{}:", cocinero);
+
+            Empleado delivery = new Empleado();
+            delivery.setEmail("delivery1@elbuensabor.com");
+            delivery.setTipoEmpleado(Rol.DELIVERY);
+            delivery.setNombre("Yenderson");
+            delivery.setClave(passwordEncoder.encode("Delivery123"));
+            delivery.setApellido("Yendono");
+            delivery.setTelefono("2615578114");
+            delivery.setFechaNacimiento(LocalDate.of(1985, 7, 3));
+            delivery.setImagenEmpleado(imagenDelivery);
+            empleadoRepository.save(delivery);
+            logger.info("Empleado{}:", delivery);
+
+
 
 
             //Crea un pedido para el cliente
