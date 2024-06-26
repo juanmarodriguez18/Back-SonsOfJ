@@ -1,7 +1,9 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.example.buensaboruno.config.LocalTimeDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,11 +18,14 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-//@Audited
 public class Sucursal extends  Base{
 
     private String nombre;
+
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime horarioApertura;
+
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime horarioCierre;
 
     @OneToMany(mappedBy = "sucursal", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -28,7 +33,6 @@ public class Sucursal extends  Base{
     protected Set<ImagenSucursal> imagenesSucursal = new HashSet<>();
 
     @ManyToOne
-    //@JsonBackReference
     @JsonIgnore
     private Empresa empresa;
 
