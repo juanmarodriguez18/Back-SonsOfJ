@@ -178,14 +178,14 @@ public class BuensaborunoApplication {
             // Crear Sucursales, las Imagenes y asociarlas
             Sucursal sucursalGuaymallen = Sucursal.builder()
                     .nombre("En Guaymallen")
-                    .horarioApertura(LocalTime.of(17, 0))
-                    .horarioCierre(LocalTime.of(23, 0))
+                    .horarioApertura(LocalTime.of(8, 0))
+                    .horarioCierre(LocalTime.of(22, 0))
                     .empresa(empresaCarlos)
                     .build();
             Sucursal sucursalMarDelPlata = Sucursal.builder()
                     .nombre("En MDP")
-                    .horarioApertura(LocalTime.of(16, 0))
-                    .horarioCierre(LocalTime.of(23, 30))
+                    .horarioApertura(LocalTime.of(8, 0))
+                    .horarioCierre(LocalTime.of(22, 0))
                     .empresa(empresaCarlos)
                     .build();
             ImagenSucursal imgSucGuay = ImagenSucursal.builder()
@@ -753,16 +753,16 @@ public class BuensaborunoApplication {
 
             Sucursal sucursal1 = Sucursal.builder().nombre("sucursal 1")
                     .domicilio(domicilioSucu1)
-                    .horarioApertura(LocalTime.of(12, 30, 00))
-                    .horarioCierre(LocalTime.of(20, 00, 00))
+                    .horarioApertura(LocalTime.of(8, 0))
+                    .horarioCierre(LocalTime.of(22, 0))
                     .empresa(empresa)
                     .build();
             sucursalRepository.save(sucursal1);
 
             Sucursal sucursal2 = Sucursal.builder().nombre("sucursal 2")
                     .domicilio(domicilioSucu2)
-                    .horarioApertura(LocalTime.of(12, 30, 00))
-                    .horarioCierre(LocalTime.of(20, 00, 00))
+                    .horarioApertura(LocalTime.of(8, 0))
+                    .horarioCierre(LocalTime.of(22, 0))
                     .empresa(empresa)
                     .build();
             sucursalRepository.save(sucursal2);
