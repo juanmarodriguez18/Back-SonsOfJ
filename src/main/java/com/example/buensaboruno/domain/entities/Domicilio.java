@@ -30,7 +30,7 @@ public class Domicilio extends Base{
     private Integer nroDpto;
 
     @ManyToOne
-    //@NotAudited
+    @NotAudited
     private Localidad localidad;
 
     @ManyToMany (mappedBy = "domicilios")
