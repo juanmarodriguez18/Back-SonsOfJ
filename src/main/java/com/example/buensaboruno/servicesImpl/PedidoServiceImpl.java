@@ -59,7 +59,7 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
                 detalle.setArticulo(articulo);
                 PedidoDetalle savedDetalle = pedidoDetalleRepository.save(detalle); // Guardar los detalles en la bd
                 costoTotal += calcularTotalCosto(articulo.getId(), detalle.getCantidad()); // Calcular costo total por cada iteración de detalle
-                descontarStock(articulo.getId(), detalle.getCantidad()); // Descontar el stock por cada iteración de detalle
+                //descontarStock(articulo.getId(), detalle.getCantidad()); // Descontar el stock por cada iteración de detalle
 
                 detallesPersistidos.add(savedDetalle);
             }
@@ -167,18 +167,71 @@ public class PedidoServiceImpl extends BaseServiceImpl<Pedido, Long> implements 
     }
 
 
-    public Pedido update(Pedido request, Long id) {
-        Optional<Pedido> optionalPedido = pedidoRepository.findById(id);
-        if (optionalPedido.isEmpty()) {
-            throw new RuntimeException("Pedido no encontrado con ID: " + id);
+    @Transactional
+    public Pedido update(Long id, Pedido request) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("El pedido con id " + id + " no se ha encontrado"));
+
+        Estado estadoAnterior = pedido.getEstado();
+
+        // Actualizar el estado del pedido
+        pedido.setEstado(request.getEstado());
+
+        // Si el estado cambia de PENDIENTE a LISTO_PARA_ENTREGA, descontar el stock
+        if (estadoAnterior != Estado.LISTO_PARA_ENTREGA && request.getEstado() == Estado.LISTO_PARA_ENTREGA) {
+            for (PedidoDetalle detalle : pedido.getPedidoDetalles()) {
+                descontarStock(detalle.getArticulo().getId(), detalle.getCantidad());
+            }
         }
 
-        Pedido pedido = optionalPedido.get();
-        pedido.setEstado(request.getEstado()); // Actualizar el estado del pedido
-        // Aquí puedes añadir más actualizaciones si es necesario, por ejemplo:
-        // pedido.setOtrosCampos(request.getOtrosCampos());
+        // Si el estado cambia de LISTO_PARA_ENTREGA a CANCELADO, sumar el stock
+        if (estadoAnterior == Estado.LISTO_PARA_ENTREGA && request.getEstado() == Estado.CANCELADO) {
+            for (PedidoDetalle detalle : pedido.getPedidoDetalles()) {
+                sumarStock(detalle.getArticulo().getId(), detalle.getCantidad());
+            }
+        }
 
         return pedidoRepository.save(pedido);
+    }
+
+    @Transactional
+    public void sumarStock(Long idArticulo, int cantidad) {
+        // Buscar Insumo por ID
+        Optional<ArticuloInsumo> optionalInsumo = articuloInsumoRepository.findById(idArticulo);
+
+        // si el articulo es un insumo
+        if (optionalInsumo.isPresent()) {
+            ArticuloInsumo insumo = optionalInsumo.get();
+            // Validar que el insumo no sea para elaborar
+            if (!insumo.getEsParaElaborar()) {
+                Double stockSumado = insumo.getStockActual() + cantidad; // Sumar cantidad al stock actual
+                insumo.setStockActual(stockSumado); // Asignarle al insumo el stock sumado
+                articuloInsumoRepository.save(insumo); // Guardar cambios
+            }
+        } else {
+            // Si no es insumo, es manufacturado
+            Optional<ArticuloManufacturado> optionalManufacturado = articuloManufacturadoRepository.findById(idArticulo);
+
+            if (optionalManufacturado.isPresent()) {
+                ArticuloManufacturado manufacturado = optionalManufacturado.get();
+                // Obtener los detalles del manufacturado
+                Set<ArticuloManufacturadoDetalle> detalles = manufacturado.getArticuloManufacturadoDetalles();
+
+                if (detalles != null && !detalles.isEmpty()) {
+                    for (ArticuloManufacturadoDetalle detalle : detalles) { // Recorrer los detalles
+                        ArticuloInsumo insumo = detalle.getArticuloInsumo();
+                        // Validar que el insumo no sea para elaborar
+                        if (!insumo.getEsParaElaborar()) {
+                            Double cantidadInsumo = (double) (detalle.getCantidad() * cantidad); // Multiplicar la cantidad necesaria de insumo por la cantidad de manufacturados del pedido
+                            double stockSumado = insumo.getStockActual() + cantidadInsumo; // Sumar el stock actual
+                            insumo.setStockActual(stockSumado); // Asignarle al insumo el stock sumado
+                            articuloInsumoRepository.save(insumo); // Guardar cambios
+                        }
+                    }
+                }
+            } else {
+                throw new RuntimeException("Articulo con id " + idArticulo + " no existe");
+            }
+        }
     }
 
 

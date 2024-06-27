@@ -57,7 +57,7 @@ public class PedidoController {
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Pedido pedido) {
         try {
-            Pedido updatedPedido = service.update(pedido, id);
+            Pedido updatedPedido = service.update(id, pedido);
             return ResponseEntity.status(HttpStatus.OK).body(updatedPedido);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"" + e.getMessage() + "\"}");
