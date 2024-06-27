@@ -29,7 +29,6 @@ public class Sucursal extends  Base{
 
     @ManyToOne
     //@JsonBackReference
-    @JsonIgnore
     private Empresa empresa;
 
     @OneToOne
