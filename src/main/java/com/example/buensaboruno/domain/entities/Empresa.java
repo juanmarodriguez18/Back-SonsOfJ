@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.HashSet;
@@ -25,6 +26,6 @@ public class Empresa extends Base{
     @OneToMany(mappedBy = "empresa",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
     @ToString.Exclude
     @Builder.Default
-    //@JsonManagedReference
+    @JsonIgnore
     private Set<Sucursal> sucursales= new HashSet<>();
 }
