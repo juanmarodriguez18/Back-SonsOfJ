@@ -1,5 +1,6 @@
 package com.example.buensaboruno.controllers;
 
+import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.entities.Sucursal;
 import com.example.buensaboruno.servicesImpl.SucursalServiceImpl;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/sucursales")
@@ -26,6 +29,32 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalSer
             return ResponseEntity.status(HttpStatus.OK).body(sucursales);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener todas las sucursales. Por favor intente luego\"}");
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        try {
+            Sucursal sucursal = service.findById(id);
+            if (sucursal != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(sucursal);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Sucursal no encontrada\"}");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener la sucursal. Por favor intente luego\"}");
+        }
+    }
+
+    // Método para obtener los pedidos de una sucursal específica
+    @GetMapping("/{id}/pedidos")
+    public ResponseEntity<?> getPedidosBySucursal(@PathVariable Long id) {
+        try {
+            Set<Pedido> pedidos = service.getPedidosBySucursal(id);
+            return ResponseEntity.status(HttpStatus.OK).body(pedidos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("{\"error\":\"Error al obtener los pedidos de la sucursal. Por favor intente luego\"}");
         }
     }
 
