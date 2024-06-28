@@ -264,6 +264,23 @@ public class BuensaborunoApplication {
                     .build();
             cocaCola.getImagenesArticulo().add(imagenCoca);
 
+            // Crear sprite, la imagen y asociarla
+            ArticuloInsumo sprite = ArticuloInsumo.builder()
+                    .denominacion("Sprite")
+                    .unidadMedida(unidadMedidaLitros)
+                    .esParaElaborar(false)
+                    .categoria(categoriaGaseosas)
+                    .stockActual(1300.0)
+                    .stockMinimo(10)
+                    .precioCompra(1000.0)
+                    .precioVenta(2500.0)
+                    .build();
+            ImagenArticulo imagenSprite = ImagenArticulo.builder()
+                    .url("https://i.postimg.cc/x8FRFvZF/sprite.jpg")
+                    .articulo(sprite)
+                    .build();
+            sprite.getImagenesArticulo().add(imagenSprite);
+
             // Crear Harina, la imagen y asociarlaaaa
             ArticuloInsumo harina = ArticuloInsumo.builder()
                     .denominacion("Harina")
@@ -418,9 +435,9 @@ public class BuensaborunoApplication {
             cheddar.getImagenesArticulo().add(imagenCheddar);
 
             // Guardar Articulos Insumos e Imagenes
-            articuloInsumoRepository.saveAll(Arrays.asList(cocaCola, harina, tomate, queso, bife, medallonCarne, panHamburguesa, panArabe, panceta, cheddar));
+            articuloInsumoRepository.saveAll(Arrays.asList(cocaCola, harina, tomate, queso, bife, medallonCarne, panHamburguesa, panArabe, panceta, cheddar, sprite));
             imagenArticuloRepository.saveAll(Arrays.asList(imagenCoca, imagenHarina, imagenTomate, imagenQueso, imagenBife, imagenMedallon,
-                    imagenPanHamburguesa, imagenPanArabe, imagenPanceta, imagenCheddar));
+                    imagenPanHamburguesa, imagenPanArabe, imagenPanceta, imagenCheddar, imagenSprite));
             logger.info("-----> Terminada la creacion de Articulos Insumos");
 
             // Crear Articulos Manufacturados
@@ -723,6 +740,7 @@ public class BuensaborunoApplication {
             admin.setClave(passwordEncoder.encode("Admin123"));
             admin.setApellido("Rodriguez");
             admin.setTelefono("2614578774");
+            admin.setSucursal(sucursalGuaymallen);
             admin.setFechaNacimiento(LocalDate.of(1987, 6, 24));
             admin.setImagenEmpleado(imagenAdmin);
             empleadoRepository.save(admin);
@@ -735,6 +753,7 @@ public class BuensaborunoApplication {
             cocinero.setClave(passwordEncoder.encode("Cocinero123"));
             cocinero.setApellido("Cocinas");
             cocinero.setTelefono("2614818774");
+            cocinero.setSucursal(sucursalGuaymallen);
             cocinero.setFechaNacimiento(LocalDate.of(1989, 3, 22));
             cocinero.setImagenEmpleado(imagenCocinero);
             empleadoRepository.save(cocinero);
@@ -747,6 +766,7 @@ public class BuensaborunoApplication {
             delivery.setClave(passwordEncoder.encode("Delivery123"));
             delivery.setApellido("Yendono");
             delivery.setTelefono("2615578114");
+            delivery.setSucursal(sucursalGuaymallen);
             delivery.setFechaNacimiento(LocalDate.of(1985, 7, 3));
             delivery.setImagenEmpleado(imagenDelivery);
             empleadoRepository.save(delivery);
