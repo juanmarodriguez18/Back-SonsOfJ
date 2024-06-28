@@ -4,8 +4,6 @@ import com.example.buensaboruno.domain.enums.Estado;
 import com.example.buensaboruno.domain.enums.FormaPago;
 import com.example.buensaboruno.domain.enums.TipoEnvio;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +11,6 @@ import org.hibernate.envers.NotAudited;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,8 +21,7 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-//@Audited
-public class Pedido extends Base{
+public class Pedido extends Base {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime horaEstimadaFinalizacion;
     private Double total;
@@ -60,5 +56,4 @@ public class Pedido extends Base{
 
     @OneToOne
     private Factura factura;
-
 }

@@ -11,4 +11,5 @@ public interface ReporteService {
     List<Object[]> obtenerCantidadPedidosPorCliente(LocalDate fechaInicio, LocalDate fechaFin);
     List<Object[]> obtenerIngresosDiarios(LocalDate fechaInicio, LocalDate fechaFin);
     List<Object[]> obtenerIngresosMensuales(LocalDate fechaInicio, LocalDate fechaFin);
+    Double obtenerGanancia(LocalDate fechaInicio, LocalDate fechaFin);
 }

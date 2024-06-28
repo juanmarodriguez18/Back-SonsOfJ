@@ -1,4 +1,4 @@
-package com.example.buensaboruno.services.impl;
+package com.example.buensaboruno.servicesImpl;
 
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.repositories.ReporteRepository;
@@ -38,5 +38,10 @@ public class ReporteServiceImpl implements ReporteService {
     @Override
     public List<Object[]> obtenerIngresosMensuales(LocalDate fechaInicio, LocalDate fechaFin) {
         return reporteRepository.obtenerIngresosMensuales(fechaInicio, fechaFin);
+    }
+
+    @Override
+    public Double obtenerGanancia(LocalDate fechaInicio, LocalDate fechaFin) {
+        return reporteRepository.obtenerGanancia(fechaInicio, fechaFin);
     }
 }

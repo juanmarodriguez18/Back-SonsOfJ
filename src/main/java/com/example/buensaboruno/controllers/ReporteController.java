@@ -49,4 +49,11 @@ public class ReporteController {
         LocalDate fin = LocalDate.parse(fechaFin);
         return reporteService.obtenerIngresosMensuales(inicio, fin);
     }
+
+    @GetMapping("/ganancia")
+    public Double getGanancia(@RequestParam String fechaInicio, @RequestParam String fechaFin) {
+        LocalDate inicio = LocalDate.parse(fechaInicio);
+        LocalDate fin = LocalDate.parse(fechaFin);
+        return reporteService.obtenerGanancia(inicio, fin);
+    }
 }

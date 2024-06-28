@@ -48,4 +48,10 @@ public interface ReporteRepository extends JpaRepository<Pedido, Long> {
             "GROUP BY YEAR(p.fechaPedido), MONTH(p.fechaPedido) " +
             "ORDER BY YEAR(p.fechaPedido), MONTH(p.fechaPedido)")
     List<Object[]> obtenerIngresosMensuales(LocalDate fechaInicio, LocalDate fechaFin);
+
+    @Query("SELECT SUM(p.total) - SUM(p.totalCosto) AS Ganancia " +
+            "FROM Pedido p " +
+            "WHERE p.fechaPedido BETWEEN :fechaInicio AND :fechaFin " +
+            "AND p.eliminado = false")
+    Double obtenerGanancia(LocalDate fechaInicio, LocalDate fechaFin);
 }
