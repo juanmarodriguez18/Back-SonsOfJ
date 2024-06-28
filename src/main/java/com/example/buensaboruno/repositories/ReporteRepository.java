@@ -32,4 +32,20 @@ public interface ReporteRepository extends JpaRepository<Pedido, Long> {
             "GROUP BY c.nombre, c.apellido " +
             "ORDER BY CantidadPedidos DESC")
     List<Object[]> obtenerCantidadPedidosPorCliente(LocalDate fechaInicio, LocalDate fechaFin);
+
+    @Query("SELECT CAST(p.fechaPedido AS java.sql.Date) AS Dia, SUM(p.total) AS Ingresos " +
+            "FROM Pedido p " +
+            "WHERE p.fechaPedido BETWEEN :fechaInicio AND :fechaFin " +
+            "AND p.eliminado = false " +
+            "GROUP BY CAST(p.fechaPedido AS java.sql.Date) " +
+            "ORDER BY CAST(p.fechaPedido AS java.sql.Date)")
+    List<Object[]> obtenerIngresosDiarios(LocalDate fechaInicio, LocalDate fechaFin);
+
+    @Query("SELECT YEAR(p.fechaPedido) AS Anio, MONTH(p.fechaPedido) AS Mes, SUM(p.total) AS Ingresos " +
+            "FROM Pedido p " +
+            "WHERE p.fechaPedido BETWEEN :fechaInicio AND :fechaFin " +
+            "AND p.eliminado = false " +
+            "GROUP BY YEAR(p.fechaPedido), MONTH(p.fechaPedido) " +
+            "ORDER BY YEAR(p.fechaPedido), MONTH(p.fechaPedido)")
+    List<Object[]> obtenerIngresosMensuales(LocalDate fechaInicio, LocalDate fechaFin);
 }

@@ -1,4 +1,4 @@
-package com.example.buensaboruno.controller;
+package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.services.ReporteService;
@@ -34,5 +34,19 @@ public class ReporteController {
         LocalDate inicio = LocalDate.parse(fechaInicio);
         LocalDate fin = LocalDate.parse(fechaFin);
         return reporteService.obtenerCantidadPedidosPorCliente(inicio, fin);
+    }
+
+    @GetMapping("/ingresos-diarios")
+    public List<Object[]> getIngresosDiarios(@RequestParam String fechaInicio, @RequestParam String fechaFin) {
+        LocalDate inicio = LocalDate.parse(fechaInicio);
+        LocalDate fin = LocalDate.parse(fechaFin);
+        return reporteService.obtenerIngresosDiarios(inicio, fin);
+    }
+
+    @GetMapping("/ingresos-mensuales")
+    public List<Object[]> getIngresosMensuales(@RequestParam String fechaInicio, @RequestParam String fechaFin) {
+        LocalDate inicio = LocalDate.parse(fechaInicio);
+        LocalDate fin = LocalDate.parse(fechaFin);
+        return reporteService.obtenerIngresosMensuales(inicio, fin);
     }
 }

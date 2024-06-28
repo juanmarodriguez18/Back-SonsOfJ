@@ -9,4 +9,6 @@ public interface ReporteService {
     List<Pedido> obtenerPedidosPorFecha(LocalDate fechaInicio, LocalDate fechaFin);
     List<Object[]> obtenerRankingComidas(LocalDate fechaInicio, LocalDate fechaFin);
     List<Object[]> obtenerCantidadPedidosPorCliente(LocalDate fechaInicio, LocalDate fechaFin);
+    List<Object[]> obtenerIngresosDiarios(LocalDate fechaInicio, LocalDate fechaFin);
+    List<Object[]> obtenerIngresosMensuales(LocalDate fechaInicio, LocalDate fechaFin);
 }
