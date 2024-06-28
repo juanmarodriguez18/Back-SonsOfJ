@@ -1,10 +1,12 @@
 package com.example.buensaboruno.servicesImpl;
 
 import com.example.buensaboruno.domain.entities.Cliente;
+import com.example.buensaboruno.domain.entities.Domicilio;
 import com.example.buensaboruno.domain.entities.Empleado;
 import com.example.buensaboruno.dto.LoginDTO;
 import com.example.buensaboruno.dto.ResponseDTO;
 import com.example.buensaboruno.repositories.ClienteRepository;
+import com.example.buensaboruno.repositories.DomicilioRepository;
 import com.example.buensaboruno.repositories.EmpleadoRepository;
 import com.example.buensaboruno.services.IAuthService;
 import com.example.buensaboruno.services.IJWTUtilityService;
@@ -12,6 +14,7 @@ import com.example.buensaboruno.validations.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -24,6 +27,9 @@ public class AuthServiceImpl implements IAuthService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private DomicilioRepository domicilioRepository;
 
     @Autowired
     private IJWTUtilityService jwtUtilityService;
@@ -119,6 +125,7 @@ public class AuthServiceImpl implements IAuthService {
     }
 
 
+    @Transactional
     public ResponseDTO registerCliente(Cliente cliente) throws Exception {
         try {
             ResponseDTO response = userValidation.validateCliente(cliente);
@@ -137,6 +144,15 @@ public class AuthServiceImpl implements IAuthService {
 
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
             cliente.setClave(encoder.encode(cliente.getClave()));
+
+            // Guardar los domicilios nuevos
+            for (Domicilio domicilio : cliente.getDomicilios()) {
+                // Asignar un ID nulo o 0 si es necesario para crear un domicilio nuevo
+                domicilio.setId(null); // O domicilio.setId(0L); dependiendo de cómo manejes los IDs
+                domicilioRepository.save(domicilio);
+            }
+
+            // Guardar el cliente y sus domicilios asociados
             clienteRepository.save(cliente);
             response.setMessage("Cliente registrado exitosamente");
 
