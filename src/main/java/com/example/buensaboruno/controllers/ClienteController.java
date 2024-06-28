@@ -45,8 +45,8 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteServic
         try {
             ImagenCliente img = imagenClienteRepository.save(cliente.getImagenCliente());
             cliente.setImagenCliente(img);
-            UsuarioCliente ucli = usuarioClienteRepository.save(cliente.getUsuarioCliente());
-            cliente.setUsuarioCliente(ucli);
+            //UsuarioCliente ucli = usuarioClienteRepository.save(cliente.getUsuarioCliente());
+            //cliente.setUsuarioCliente(ucli);
             return ResponseEntity.status(HttpStatus.OK).body(service.save(cliente));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar el cliente. Por favor intente luego\"}");

@@ -696,10 +696,11 @@ public class BuensaborunoApplication {
             Cliente cliente = new Cliente();
 
             cliente.setImagenCliente(imagenCliente);
-            cliente.setEmail("correoFalso@gmail.com");
+            cliente.setEmail("juanma.tombino@hotmail.com");
+            cliente.setClave(passwordEncoder.encode("Sebastian123"));
             cliente.setNombre("Sebastian");
             cliente.setApellido("Wilder");
-            cliente.setUsuarioCliente(usuarioCliente);
+            //cliente.setUsuarioCliente(usuarioCliente);
             cliente.setTelefono("2615920825");
             //cliente.setEstaActivo(true);
             cliente.getDomicilios().add(domicilioCliente);
@@ -708,10 +709,11 @@ public class BuensaborunoApplication {
             Cliente cliente2 = new Cliente();
 
             cliente2.setImagenCliente(imagenCliente2);
-            cliente2.setEmail("morro_garcia@gmail.com");
+            cliente2.setEmail("juanma.tombino.jmr@gmail.com");
+            cliente2.setClave(passwordEncoder.encode("Morro123"));
             cliente2.setNombre("Santiago");
             cliente2.setApellido("Garcia");
-            cliente2.setUsuarioCliente(usuarioCliente2);
+            //cliente2.setUsuarioCliente(usuarioCliente2);
             cliente2.setTelefono("2614578996");
             //cliente.setEstaActivo(true);
             cliente2.getDomicilios().add(domicilioCliente2);

@@ -23,13 +23,14 @@ public class Cliente extends Base {
     private String apellido;
     private String telefono;
     private String email;
+    private String clave;
     private LocalDate fechaNacimiento;
 
     @ManyToMany
     @ToString.Exclude
     @JoinTable(name = "cliente_domicilio",
-            joinColumns = @JoinColumn(name = "domicilio_id"),
-            inverseJoinColumns = @JoinColumn(name = "cliente_id"))
+            joinColumns = @JoinColumn(name = "cliente_id"),
+            inverseJoinColumns = @JoinColumn(name = "domicilio_id"))
     @Builder.Default
     //@JsonManagedReference
     private Set<Domicilio> domicilios = new HashSet<>();
@@ -37,10 +38,6 @@ public class Cliente extends Base {
     @OneToOne(cascade = CascadeType.MERGE)
     @NotAudited
     private ImagenCliente imagenCliente;
-
-    @OneToOne(cascade = CascadeType.MERGE)
-    @NotAudited
-    private UsuarioCliente usuarioCliente;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
@@ -53,5 +50,8 @@ public class Cliente extends Base {
     @Builder.Default
     private Set<Pedido> pedidos = new HashSet<>();
     */
+    /*@OneToOne(cascade = CascadeType.MERGE)
+    @NotAudited
+    private UsuarioCliente usuarioCliente;*/
 
 }

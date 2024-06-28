@@ -1,5 +1,6 @@
 package com.example.buensaboruno.controllers;
 
+import com.example.buensaboruno.domain.entities.Cliente;
 import com.example.buensaboruno.domain.entities.Empleado;
 import com.example.buensaboruno.dto.ResponseDTO;
 import com.example.buensaboruno.dto.LoginDTO;
@@ -70,6 +71,53 @@ public class AuthControllers {
 
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error al obtener el empleado: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/registerCliente")
+    public ResponseEntity<ResponseDTO> registerCliente(@RequestBody Cliente cliente) {
+        try {
+            ResponseDTO response = authService.registerCliente(cliente);
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            ResponseDTO errorResponse = new ResponseDTO();
+            errorResponse.setMessage("Error during registration: " + e.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/loginCliente")
+    public ResponseEntity<HashMap<String, String>> loginCliente(@RequestBody LoginDTO loginRequest) {
+        try {
+            HashMap<String, String> loginResponse = authService.loginCliente(loginRequest);
+            if (loginResponse != null && loginResponse.containsKey("jwt")) {
+                return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(loginResponse != null ? loginResponse : new HashMap<>(), HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            HashMap<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Error during login: " + e.getMessage());
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/currentCliente")
+    public ResponseEntity<?> getCurrentCliente(@RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            String token = authorizationHeader.replace("Bearer ", "");
+            JWTClaimsSet claimsSet = jwtUtilityService.parseJWT(token);
+            Long clienteId = Long.parseLong(claimsSet.getSubject());
+
+            Cliente cliente = authService.getClienteById(clienteId);
+            if (cliente == null) {
+                return ResponseEntity.status(404).body("Cliente no encontrado");
+            }
+
+            return ResponseEntity.ok(cliente);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error al obtener el cliente: " + e.getMessage());
         }
     }
 }
