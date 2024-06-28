@@ -1,4 +1,4 @@
-package com.example.buensaboruno.servicesImpl;
+package com.example.buensaboruno.services.impl;
 
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.repositories.ReporteRepository;
@@ -24,5 +24,9 @@ public class ReporteServiceImpl implements ReporteService {
     public List<Object[]> obtenerRankingComidas(LocalDate fechaInicio, LocalDate fechaFin) {
         return reporteRepository.obtenerRankingComidas(fechaInicio, fechaFin);
     }
-}
 
+    @Override
+    public List<Object[]> obtenerCantidadPedidosPorCliente(LocalDate fechaInicio, LocalDate fechaFin) {
+        return reporteRepository.obtenerCantidadPedidosPorCliente(fechaInicio, fechaFin);
+    }
+}

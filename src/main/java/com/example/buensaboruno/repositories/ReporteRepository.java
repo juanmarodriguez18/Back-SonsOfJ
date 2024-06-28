@@ -24,4 +24,12 @@ public interface ReporteRepository extends JpaRepository<Pedido, Long> {
 
     @Query("SELECT p FROM Pedido p WHERE p.fechaPedido BETWEEN :fechaInicio AND :fechaFin")
     List<Pedido> findPedidosByFechaRange(LocalDate fechaInicio, LocalDate fechaFin);
+
+    @Query("SELECT c.nombre, c.apellido, COUNT(p) AS CantidadPedidos " +
+            "FROM Pedido p " +
+            "JOIN p.cliente c " +
+            "WHERE p.fechaPedido BETWEEN :fechaInicio AND :fechaFin " +
+            "GROUP BY c.nombre, c.apellido " +
+            "ORDER BY CantidadPedidos DESC")
+    List<Object[]> obtenerCantidadPedidosPorCliente(LocalDate fechaInicio, LocalDate fechaFin);
 }
