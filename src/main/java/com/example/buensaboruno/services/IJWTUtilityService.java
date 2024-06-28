@@ -11,4 +11,5 @@ import java.text.ParseException;
 public interface IJWTUtilityService {
     public String generateJWT(Long empleadoId) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, JOSEException;
     public JWTClaimsSet parseJWT(String jwt) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, ParseException, JOSEException;
+
 }
