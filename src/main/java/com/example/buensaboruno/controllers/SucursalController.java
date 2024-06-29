@@ -62,15 +62,14 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalSer
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody Sucursal sucursal) {
         try {
-            sucursal.getImagenesSucursal().forEach(imagenSucursal -> imagenSucursal.setSucursal(sucursal));
-            sucursal.getPromociones().forEach(promocion -> promocion.getSucursales().add(sucursal));
-            sucursal.getCategorias().forEach(categoria -> categoria.getSucursales().add(sucursal));
-            sucursal.getPedidos().forEach(pedido -> pedido.setSucursal(sucursal));
-            return ResponseEntity.status(HttpStatus.OK).body(service.save(sucursal));
+            service.save(sucursal);
+            return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"Sucursal guardada exitosamente\"}");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar la sucursal. Por favor intente luego\"}");
         }
     }
+
 
     @Override
     @PutMapping("/{id}")
