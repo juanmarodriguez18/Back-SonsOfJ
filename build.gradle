@@ -22,6 +22,9 @@ repositories {
 	maven { url 'https://repository.mercadopago.com/release' }
 }
 
+ext {
+	set('springCloudAzureVersion', "5.13.0")
+}
 
 dependencies {
 	//JPA
@@ -36,6 +39,9 @@ dependencies {
 
 	//H2 DATABASE
 	runtimeOnly 'com.h2database:h2'
+
+	//MySql
+	//runtimeOnly 'com.mysql:mysql-connector-j'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	//MAPSTRUCT
@@ -70,6 +76,16 @@ dependencies {
 	implementation 'com.nimbusds:nimbus-jose-jwt:9.23'
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	//almacén de claves de azure key vault
+	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
+	implementation 'com.azure.spring:spring-cloud-azure-starter'
+
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:${springCloudAzureVersion}"
+	}
 }
 
 tasks.named('test') {

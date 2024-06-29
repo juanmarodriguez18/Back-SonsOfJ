@@ -47,7 +47,7 @@ public class FacturaController extends BaseControllerImpl<Factura, FacturaServic
 
     @GetMapping("/factura/{idPedido}")
     public ResponseEntity<byte[]> descargarFactura(@PathVariable long idPedido) throws DocumentException, IOException {
-        Factura factura = new Factura();
+        Factura factura = facturaService.getByPedidoId(idPedido);
         byte[] pdfContent = pdfService.generarFacturaPdf(factura);
 
         HttpHeaders headers = new HttpHeaders();
