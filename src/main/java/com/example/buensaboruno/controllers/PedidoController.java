@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -97,5 +98,14 @@ public class PedidoController {
         }
     }
 
-
+    // Nuevo endpoint para obtener pedidos por rango de fechas
+    @GetMapping("/filtrar")
+    public ResponseEntity<?> getPedidosByFecha(@RequestParam("fechaInicio") LocalDate fechaInicio, @RequestParam("fechaFin") LocalDate fechaFin) {
+        try {
+            List<Pedido> pedidos = service.findPedidosByFecha(fechaInicio, fechaFin);
+            return ResponseEntity.status(HttpStatus.OK).body(pedidos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener los pedidos por fecha. Por favor intente luego\"}");
+        }
+    }
 }
