@@ -15,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/pedidos")
@@ -120,9 +121,16 @@ public class PedidoController {
     @GetMapping("/export/excel")
     public ResponseEntity<InputStreamResource> exportPedidosToExcel(
             @RequestParam String fechaInicio,
-            @RequestParam String fechaFin) {
+            @RequestParam String fechaFin,
+            @RequestParam(required = false) String estado) {
         try {
             List<Pedido> pedidos = service.findPedidosByFecha(LocalDate.parse(fechaInicio), LocalDate.parse(fechaFin));
+            if (estado != null && !estado.isEmpty()) {
+                Estado estadoEnum = Estado.valueOf(estado);
+                pedidos = pedidos.stream()
+                        .filter(p -> p.getEstado() == estadoEnum)
+                        .collect(Collectors.toList());
+            }
             ByteArrayInputStream in = excelService.generarReportePedidos(pedidos);
 
             HttpHeaders headers = new HttpHeaders();
