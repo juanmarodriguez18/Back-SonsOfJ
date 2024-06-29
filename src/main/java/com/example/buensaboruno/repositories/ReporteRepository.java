@@ -11,14 +11,14 @@ import java.util.List;
 @Repository
 public interface ReporteRepository extends JpaRepository<Pedido, Long> {
 
-    @Query("SELECT am.descripcion AS Comida, SUM(pd.cantidad) AS Pedidos " +
+    @Query("SELECT a.denominacion AS Comida, SUM(pd.cantidad) AS Pedidos " +
             "FROM Pedido p " +
             "JOIN p.pedidoDetalles pd " +
-            "JOIN pd.articulo am " +
+            "JOIN pd.articulo a " +
             "WHERE p.fechaPedido BETWEEN :fechaInicio AND :fechaFin " +
             "AND p.eliminado = false " +
             "AND pd.eliminado = false " +
-            "GROUP BY am.descripcion " +
+            "GROUP BY a.denominacion " +
             "ORDER BY Pedidos DESC")
     List<Object[]> obtenerRankingComidas(LocalDate fechaInicio, LocalDate fechaFin);
 
