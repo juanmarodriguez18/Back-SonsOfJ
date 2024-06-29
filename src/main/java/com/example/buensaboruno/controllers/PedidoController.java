@@ -2,12 +2,17 @@ package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.enums.Estado;
+import com.example.buensaboruno.services.ExcelService;
 import com.example.buensaboruno.servicesImpl.PedidoServiceImpl;
 import jakarta.validation.Valid;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,9 +21,11 @@ import java.util.List;
 public class PedidoController {
 
     private final PedidoServiceImpl service;
+    private final ExcelService excelService;
 
-    public PedidoController(PedidoServiceImpl service) {
+    public PedidoController(PedidoServiceImpl service, ExcelService excelService) {
         this.service = service;
+        this.excelService = excelService;
     }
 
     @GetMapping("")
@@ -106,6 +113,24 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.OK).body(pedidos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener los pedidos por fecha. Por favor intente luego\"}");
+        }
+    }
+
+    // Nuevo endpoint para exportar pedidos a Excel
+    @GetMapping("/export/excel")
+    public ResponseEntity<InputStreamResource> exportPedidosToExcel(
+            @RequestParam String fechaInicio,
+            @RequestParam String fechaFin) {
+        try {
+            List<Pedido> pedidos = service.findPedidosByFecha(LocalDate.parse(fechaInicio), LocalDate.parse(fechaFin));
+            ByteArrayInputStream in = excelService.generarReportePedidos(pedidos);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "attachment; filename=pedidos.xlsx");
+
+            return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

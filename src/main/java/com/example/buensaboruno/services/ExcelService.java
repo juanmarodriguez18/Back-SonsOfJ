@@ -1,5 +1,6 @@
 package com.example.buensaboruno.services;
 
+import com.example.buensaboruno.domain.entities.Pedido;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
@@ -166,6 +167,41 @@ public class ExcelService {
             // Datos
             Row row = sheet.createRow(1);
             row.createCell(0).setCellValue(ganancia);
+
+            // Ajustar tamaño de columnas
+            for (int i = 0; i < columnas.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+        }
+    }
+
+    public ByteArrayInputStream generarReportePedidos(List<Pedido> pedidos) throws IOException {
+        String[] columnas = {"Código", "Total", "Estado", "Tipo Envío", "Fecha"};
+
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            Sheet sheet = workbook.createSheet("Pedidos");
+
+            // Encabezados
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < columnas.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columnas[i]);
+            }
+
+            // Datos
+            int rowIdx = 1;
+            for (Pedido pedido : pedidos) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(pedido.getId());
+                row.createCell(1).setCellValue(pedido.getTotal());
+                row.createCell(2).setCellValue(pedido.getEstado().name());
+                row.createCell(3).setCellValue(pedido.getTipoEnvio().name());
+                row.createCell(4).setCellValue(dateFormat.format(Date.valueOf(pedido.getFechaPedido())));
+            }
 
             // Ajustar tamaño de columnas
             for (int i = 0; i < columnas.length; i++) {
