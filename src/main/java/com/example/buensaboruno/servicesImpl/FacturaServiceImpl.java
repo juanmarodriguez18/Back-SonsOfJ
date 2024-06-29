@@ -41,4 +41,11 @@ public class FacturaServiceImpl extends BaseServiceImpl<Factura, Long> implement
         return facturaRepository.save(factura);
     }
 
+    @Override
+    public Factura getByPedidoId(long id) {
+        Factura factura = facturaRepository.getByPedidoId(id);
+        return factura;
+    }
+
+
 }

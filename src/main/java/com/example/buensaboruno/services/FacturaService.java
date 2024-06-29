@@ -9,5 +9,6 @@ import java.io.IOException;
 public interface FacturaService extends BaseService<Factura, Long>{
 
     public Factura save(Factura request);
+    public Factura getByPedidoId(long id);
 
 }
