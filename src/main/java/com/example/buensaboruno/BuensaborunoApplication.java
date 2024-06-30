@@ -165,12 +165,12 @@ public class BuensaborunoApplication {
 
             // Crear Empresa, la Imagen y asociarla
             Empresa empresaCarlos = Empresa.builder()
-                    .nombre("San Carlos")
+                    .nombre("La Juanburgueseria")
                     .cuil(30546780L)
                     .razonSocial("Venta de Alimentos Manufacturados")
                     .build();
             ImagenEmpresa imgEmpCarlos = ImagenEmpresa.builder()
-                    .url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI2INnfz2sb25ROCczmEQdKYAIlCFbbItGDg&s")
+                    .url("https://i.postimg.cc/Sstymbny/Juanburguesas-logo.jpg")
                     .empresa(empresaCarlos)
                     .build();
             empresaCarlos.getImagenesEmpresa().add(imgEmpCarlos);
@@ -193,11 +193,11 @@ public class BuensaborunoApplication {
                     .empresa(empresaCarlos)
                     .build();
             ImagenSucursal imgSucGuay = ImagenSucursal.builder()
-                    .url("https://www.guaymallen.gob.ar/wp-content/uploads/2019/01/escudo-1-229x300.png")
+                    .url("https://i.postimg.cc/7P5Cfwg8/la-Juanburgueseria-sucursal2.jpg")
                     .sucursal(sucursalGuaymallen)
                     .build();
             ImagenSucursal imgSucMDP = ImagenSucursal.builder()
-                    .url("https://upload.wikimedia.org/wikipedia/commons/2/22/Escudo_de_General_Pueyrred%C3%B3n_%28color%29.svg")
+                    .url("https://i.postimg.cc/6TsxQdC3/la-Juanburgueseria-sucursal3.jpg")
                     .sucursal(sucursalMarDelPlata)
                     .build();
             sucursalGuaymallen.getImagenesSucursal().add(imgSucGuay);
@@ -832,8 +832,11 @@ public class BuensaborunoApplication {
             Domicilio domicilioSucu2 = Domicilio.builder().cp(5523).calle("calle2").numero(2668).piso(1).nroDpto(3).localidad(localidad2).build();
             domicilioRepository.save(domicilioSucu2);
 
-            Empresa empresa = Empresa.builder().nombre("Empresa de prueba").cuil(999999999L).razonSocial("Razon social").build();
+            Empresa empresa = Empresa.builder().nombre("Il Bonoso").cuil(999999999L).razonSocial("Razon social").build();
+            ImagenEmpresa imgEmpresaBono = ImagenEmpresa.builder().url("https://i.postimg.cc/tJZ9Tv6F/il-bonoso-logo.jpg").empresa(empresa).build();
+            empresa.getImagenesEmpresa().add(imgEmpresaBono);
             empresaRepository.save(empresa);
+            imagenEmpresaRepository.save(imgEmpresaBono);
 
             Sucursal sucursal1 = Sucursal.builder().nombre("sucursal 1")
                     .domicilio(domicilioSucu1)
@@ -841,7 +844,7 @@ public class BuensaborunoApplication {
                     .horarioCierre(LocalTime.of(20, 00, 00))
                     .empresa(empresa)
                     .build();
-            sucursalRepository.save(sucursal1);
+
 
             Sucursal sucursal2 = Sucursal.builder().nombre("sucursal 2")
                     .domicilio(domicilioSucu2)
@@ -849,7 +852,18 @@ public class BuensaborunoApplication {
                     .horarioCierre(LocalTime.of(20, 00, 00))
                     .empresa(empresa)
                     .build();
-            sucursalRepository.save(sucursal2);
+
+
+            ImagenSucursal imgSucursalBono1 = ImagenSucursal.builder().url("https://i.postimg.cc/L6fn3DCx/il-bonoso-sucursal-1.jpg")
+                    .sucursal(sucursal1).build();
+            ImagenSucursal imgSucursalBono2 = ImagenSucursal.builder().url("https://i.postimg.cc/xjBXmhRk/il-bonoso-sucursal-2.jpg")
+                    .sucursal(sucursal2).build();
+
+            sucursal1.getImagenesSucursal().add(imgSucursalBono1);
+            sucursal2.getImagenesSucursal().add(imgSucursalBono2);
+
+            sucursalRepository.saveAll(Arrays.asList(sucursal1, sucursal2));
+            imagenSucursalRepository.saveAll(Arrays.asList(imgSucursalBono1, imgSucursalBono2));
 
 
             Categoria categoria = Categoria.builder().denominacion("Categoria de prueba").build();
