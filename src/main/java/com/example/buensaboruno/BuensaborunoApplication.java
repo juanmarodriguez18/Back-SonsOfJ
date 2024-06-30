@@ -806,7 +806,7 @@ public class BuensaborunoApplication {
             pedido.setEmpleado(empleado);
             pedidoRepository.save(pedido);
 
-            Random random = new Random();
+            /*Random random = new Random();
             Factura facturaBuilder = Factura.builder().fechaFacturacion(LocalDate.now()).mpPaymentId(random.nextInt(1000))  // Se asume un rango máximo de 1000
                     .mpMerchantOrderId(random.nextInt(1000)) // Se asume un rango máximo de 1000
                     .mpPreferenceId("MP-" + random.nextInt(10000))  // Se asume un rango máximo de 10000
@@ -817,7 +817,7 @@ public class BuensaborunoApplication {
 
             facturaRepository.save(facturaBuilder);
 
-            pedidoRepository.save(pedido);
+            pedidoRepository.save(pedido);*/
 
 
             //Prueba de carga perezosa
