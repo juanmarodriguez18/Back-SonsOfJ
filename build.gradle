@@ -80,6 +80,9 @@ dependencies {
 	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
 	implementation 'com.azure.spring:spring-cloud-azure-starter'
 
+	//websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 }
 
 dependencyManagement {

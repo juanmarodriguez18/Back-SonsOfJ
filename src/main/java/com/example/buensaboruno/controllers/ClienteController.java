@@ -2,6 +2,7 @@ package com.example.buensaboruno.controllers;
 
 import com.example.buensaboruno.domain.entities.Cliente;
 import com.example.buensaboruno.domain.entities.ImagenCliente;
+import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.entities.UsuarioCliente;
 import com.example.buensaboruno.repositories.ImagenClienteRepository;
 import com.example.buensaboruno.repositories.UsuarioClienteRepository;
@@ -17,6 +18,9 @@ import java.util.List;
 @RequestMapping(path = "/clientes")
 public class ClienteController extends BaseControllerImpl<Cliente, ClienteServiceImpl> {
 
+    @Autowired
+    private ClienteServiceImpl clienteService;
+
     public ClienteController(ClienteServiceImpl service) {
         super(service);
 
@@ -24,8 +28,6 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteServic
 
     @Autowired
     private ImagenClienteRepository imagenClienteRepository;
-    @Autowired
-    private UsuarioClienteRepository usuarioClienteRepository;
 
     @Override
     @GetMapping("")
@@ -45,8 +47,6 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteServic
         try {
             ImagenCliente img = imagenClienteRepository.save(cliente.getImagenCliente());
             cliente.setImagenCliente(img);
-            //UsuarioCliente ucli = usuarioClienteRepository.save(cliente.getUsuarioCliente());
-            //cliente.setUsuarioCliente(ucli);
             return ResponseEntity.status(HttpStatus.OK).body(service.save(cliente));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar el cliente. Por favor intente luego\"}");
@@ -75,6 +75,16 @@ public class ClienteController extends BaseControllerImpl<Cliente, ClienteServic
             return ResponseEntity.status(HttpStatus.OK).body(Cliente);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al eliminar la categoría. Por favor intente luego\"}");
+        }
+    }
+
+    @GetMapping("/{id}/pedidos")
+    public ResponseEntity<?> getPedidosByClienteId(@PathVariable Long id) {
+        try {
+            List<Pedido> pedidos = clienteService.findPedidosByClienteId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(pedidos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener los pedidos del cliente. Por favor intente luego\"}");
         }
     }
 }

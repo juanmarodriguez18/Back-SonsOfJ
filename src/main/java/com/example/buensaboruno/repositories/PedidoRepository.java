@@ -13,4 +13,6 @@ public interface PedidoRepository extends BaseRepository<Pedido, Long> {
 
     @Query("SELECT p FROM Pedido p WHERE p.fechaPedido BETWEEN :fechaInicio AND :fechaFin")
     List<Pedido> findPedidosByFecha(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
+
+    List<Pedido> findByClienteId(Long id);
 }
