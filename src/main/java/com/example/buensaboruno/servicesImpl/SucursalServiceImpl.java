@@ -1,9 +1,6 @@
 package com.example.buensaboruno.servicesImpl;
 
-import com.example.buensaboruno.domain.entities.Domicilio;
-import com.example.buensaboruno.domain.entities.ImagenSucursal;
-import com.example.buensaboruno.domain.entities.Pedido;
-import com.example.buensaboruno.domain.entities.Sucursal;
+import com.example.buensaboruno.domain.entities.*;
 import com.example.buensaboruno.repositories.DomicilioRepository;
 import com.example.buensaboruno.repositories.ImagenArticuloRepository;
 import com.example.buensaboruno.repositories.ImagenSucursalRepository;
@@ -72,6 +69,14 @@ public class SucursalServiceImpl extends BaseServiceImpl<Sucursal, Long> impleme
 
         // Ahora que el domicilio tiene un ID generado, guardar la sucursal
         return sucursalRepository.save(sucursal);
+    }
+
+    public List<ArticuloManufacturado> findArticulosManufacturadosBySucursalId(Long id) {
+        return sucursalRepository.findArticulosManufacturadosBySucursalId(id);
+    }
+
+    public List<ArticuloInsumo> findArticulosInsumosBySucursalId(Long id) {
+        return sucursalRepository.findArticulosInsumosBySucursalId(id);
     }
 
 

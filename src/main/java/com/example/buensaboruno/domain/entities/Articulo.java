@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,5 +36,6 @@ public class Articulo extends Base {
     @JoinColumn(name = "Categoria_ID")
     @JsonIgnoreProperties({"subCategorias", "categoriaPadre", "sucursales", "articulos"})
     protected Categoria categoria;
+
 
 }

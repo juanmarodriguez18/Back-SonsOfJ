@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -22,5 +23,10 @@ public class ArticuloInsumo extends Articulo{
     private Double stockActual;
     private Integer stockMinimo;
     private Boolean esParaElaborar;
+
+    @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    @JsonBackReference
+    private Sucursal sucursal;
 
 }

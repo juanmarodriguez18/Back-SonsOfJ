@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -26,6 +27,11 @@ public class ArticuloManufacturado extends Articulo{
     @OneToMany(mappedBy = "articuloManufacturado",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private Set<ArticuloManufacturadoDetalle> articuloManufacturadoDetalles = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "sucursal_id")
+    @JsonBackReference
+    private Sucursal sucursal;
 
 
 }
