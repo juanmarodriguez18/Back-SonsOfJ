@@ -54,6 +54,6 @@ public class Pedido extends Base {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToOne
-    private Factura factura;
+    /*@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private Factura factura;*/
 }
