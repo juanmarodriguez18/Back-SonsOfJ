@@ -74,5 +74,9 @@ public class SucursalServiceImpl extends BaseServiceImpl<Sucursal, Long> impleme
         return sucursalRepository.save(sucursal);
     }
 
+    public List<Sucursal> findByEmpresa(Long empresaId) {
+        return sucursalRepository.findByEmpresa(empresaId);
+    }
+
 
 }

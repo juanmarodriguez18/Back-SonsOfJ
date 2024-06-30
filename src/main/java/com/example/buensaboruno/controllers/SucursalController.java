@@ -115,4 +115,14 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalSer
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al recuperar la sucursal. Por favor intente luego\"}");
         }
     }
+
+    @GetMapping("/empresa/{empresaId}")
+    public ResponseEntity<?> findByEmpresa(@PathVariable Long empresaId) {
+        try {
+            List<Sucursal> sucursales = service.findByEmpresa(empresaId);
+            return ResponseEntity.status(HttpStatus.OK).body(sucursales);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener todas las sucursales. Por favor intente luego\"}");
+        }
+    }
 }
