@@ -1,5 +1,6 @@
 package com.example.buensaboruno.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -28,7 +29,7 @@ public class Sucursal extends  Base{
     protected Set<ImagenSucursal> imagenesSucursal = new HashSet<>();
 
     @ManyToOne
-    //@JsonBackReference
+    @JsonBackReference
     private Empresa empresa;
 
     @OneToOne
@@ -59,6 +60,16 @@ public class Sucursal extends  Base{
     @Builder.Default
     @JsonManagedReference(value = "sucursal-pedido")
     private Set<Pedido> pedidos = new HashSet<>();
+
+    @OneToMany(mappedBy = "sucursal",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
+    @Builder.Default
+    @JsonManagedReference
+    private Set<ArticuloManufacturado> articulosManufacturados = new HashSet<>();
+
+    @OneToMany(mappedBy = "sucursal",cascade = CascadeType.REFRESH,fetch = FetchType.LAZY)
+    @Builder.Default
+    @JsonManagedReference
+    private Set<ArticuloInsumo> articulosInsumo = new HashSet<>();
 
 
 }

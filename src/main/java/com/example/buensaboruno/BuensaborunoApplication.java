@@ -187,7 +187,7 @@ public class BuensaborunoApplication {
                     .empresa(empresaCarlos)
                     .build();
             Sucursal sucursalMarDelPlata = Sucursal.builder()
-                    .nombre("En MDP")
+                    .nombre("En Lujan")
                     .horarioApertura(LocalTime.of(16, 0))
                     .horarioCierre(LocalTime.of(23, 30))
                     .empresa(empresaCarlos)
@@ -213,8 +213,8 @@ public class BuensaborunoApplication {
             domicilioRepository.saveAll(Arrays.asList(domicilioBerutti, domicilioGaboto));
 
             // Asignar Domicilios a Sucursales
-            sucursalGuaymallen.setDomicilio(domicilioBerutti);
-            sucursalMarDelPlata.setDomicilio(domicilioGaboto);
+            sucursalGuaymallen.setDomicilio(domicilioGaboto);
+            sucursalMarDelPlata.setDomicilio(domicilioBerutti);
 
             // Guardar Sucursales
             sucursalRepository.saveAll(Arrays.asList(sucursalGuaymallen, sucursalMarDelPlata));
@@ -257,6 +257,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(1500.0)
                     .precioVenta(4000.0)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenCoca = ImagenArticulo.builder()
                     .url("https://m.media-amazon.com/images/I/51v8nyxSOYL._SL1500_.jpg")
@@ -274,6 +275,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(1000.0)
                     .precioVenta(2500.0)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenSprite = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/x8FRFvZF/sprite.jpg")
@@ -291,6 +293,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(1000.0)
                     .precioVenta(1500.5)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenHarina = ImagenArticulo.builder()
                     .url("https://mandolina.co/wp-content/uploads/2023/03/648366622-1024x683.jpg")
@@ -308,6 +311,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(100.6)
                     .precioVenta(150.6)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenTomate = ImagenArticulo.builder()
                     .url("https://thefoodtech.com/wp-content/uploads/2020/06/Componentes-de-calidad-en-el-tomate-828x548.jpg")
@@ -325,6 +329,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(200.6)
                     .precioVenta(400.6)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenQueso = ImagenArticulo.builder()
                     .url("https://superdepaso.com.ar/wp-content/uploads/2021/06/SANTAROSA-PATEGRAS-04.jpg")
@@ -342,6 +347,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(400.0)
                     .precioVenta(1500.0)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenBife = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/jSTS7nCq/bifelomo.jpg")
@@ -359,6 +365,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(300.0)
                     .precioVenta(1200.0)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenMedallon = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/FHxsgFJy/medallon-carne-cruda.jpg")
@@ -376,6 +383,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(200.0)
                     .precioVenta(800.0)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenPanHamburguesa = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/FRYr4jCp/pan-papa.jpg")
@@ -393,6 +401,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(200.0)
                     .precioVenta(800.0)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenPanArabe = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/x8H9k92b/panarabe.jpg")
@@ -410,6 +419,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(300.0)
                     .precioVenta(900.0)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenPanceta = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/NMZgf5Wc/panceta-ahumada.jpg")
@@ -427,6 +437,7 @@ public class BuensaborunoApplication {
                     .stockMinimo(10)
                     .precioCompra(350.0)
                     .precioVenta(600.0)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenCheddar = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/fW0zqf9T/queso-cheddar.jpg")
@@ -450,6 +461,7 @@ public class BuensaborunoApplication {
                     .tiempoEstimadoMinutos(15)
                     .preparacion("Esto se prepara asi")
                     .categoria(categoriaPizzas)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenPizzaMuzarella = ImagenArticulo.builder()
                     .url("https://storage.googleapis.com/fitia-api-bucket/media/images/recipe_images/1002846.jpg")
@@ -478,6 +490,7 @@ public class BuensaborunoApplication {
                     .tiempoEstimadoMinutos(15)
                     .preparacion("Esto se prepara asi")
                     .categoria(categoriaPizzas)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenPizzaNapolitana = ImagenArticulo.builder()
                     .url("https://assets.elgourmet.com/wp-content/uploads/2023/03/8metlvp345_portada-pizza-1024x686.jpg.webp")
@@ -511,6 +524,7 @@ public class BuensaborunoApplication {
                     .tiempoEstimadoMinutos(25)
                     .preparacion("Se doran los medallones de carne en la plancha, se dan vuelta y se les pone el cheddar")
                     .categoria(categoriaSandwichs)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenHamburguesa = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/0N25tgpL/juanburguesa.jpg")
@@ -549,6 +563,7 @@ public class BuensaborunoApplication {
                     .tiempoEstimadoMinutos(30)
                     .preparacion("Se cocinan los bifes de lomo a la plancha con queso y se ponen en el pan")
                     .categoria(categoriaSandwichs)
+                    .sucursal(sucursalGuaymallen)
                     .build();
             ImagenArticulo imagenLomito = ImagenArticulo.builder()
                     .url("https://i.postimg.cc/5t74TPgj/lomo-con-papas.jpg")

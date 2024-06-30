@@ -1,5 +1,7 @@
 package com.example.buensaboruno.controllers;
 
+import com.example.buensaboruno.domain.entities.ArticuloInsumo;
+import com.example.buensaboruno.domain.entities.ArticuloManufacturado;
 import com.example.buensaboruno.domain.entities.Pedido;
 import com.example.buensaboruno.domain.entities.Sucursal;
 import com.example.buensaboruno.servicesImpl.SucursalServiceImpl;
@@ -113,6 +115,28 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalSer
             return ResponseEntity.status(HttpStatus.OK).body(sucursal);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al recuperar la sucursal. Por favor intente luego\"}");
+        }
+    }
+
+    // Endpoint para obtener artículos manufacturados de una sucursal específica
+    @GetMapping("/{id}/articulosManufacturados")
+    public ResponseEntity<?> getArticulosManufacturados(@PathVariable Long id) {
+        try {
+            List<ArticuloManufacturado> articulos = service.findArticulosManufacturadosBySucursalId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(articulos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener artículos manufacturados de la sucursal. Por favor intente luego\"}");
+        }
+    }
+
+    // Endpoint para obtener insumos de una sucursal específica
+    @GetMapping("/{id}/articulosInsumos")
+    public ResponseEntity<?> getArticulosInsumos(@PathVariable Long id) {
+        try {
+            List<ArticuloInsumo> articulos = service.findArticulosInsumosBySucursalId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(articulos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al obtener insumos de la sucursal. Por favor intente luego\"}");
         }
     }
 }
