@@ -22,7 +22,6 @@ public class PedidoController {
     private final PedidoServiceImpl service;
     private final ExcelService excelService;
 
-
     @Autowired
     public PedidoController(PedidoServiceImpl service, ExcelService excelService) {
         this.service = service;
@@ -106,7 +105,6 @@ public class PedidoController {
         }
     }
 
-    // Nuevo endpoint para obtener pedidos por rango de fechas
     @GetMapping("/filtrar")
     public ResponseEntity<?> getPedidosByFecha(@RequestParam("fechaInicio") LocalDate fechaInicio, @RequestParam("fechaFin") LocalDate fechaFin) {
         try {
@@ -117,14 +115,18 @@ public class PedidoController {
         }
     }
 
-    // Endpoint para exportar pedidos filtrados a Excel
     @GetMapping("/export/excel")
-    public ResponseEntity<?> exportPedidosToExcel(@RequestParam("fechaInicio") LocalDate fechaInicio, @RequestParam("fechaFin") LocalDate fechaFin, @RequestParam(value = "estado", required = false) String estado) {
+    public ResponseEntity<?> exportPedidosToExcel(@RequestParam("fechaInicio") LocalDate fechaInicio, @RequestParam("fechaFin") LocalDate fechaFin, @RequestParam(value = "estado", required = false) String estado, @RequestParam(value = "tipoEnvio", required = false) String tipoEnvio) {
         try {
             List<Pedido> pedidos = service.findPedidosByFecha(fechaInicio, fechaFin);
             if (estado != null && !estado.isEmpty()) {
                 pedidos = pedidos.stream()
                         .filter(p -> p.getEstado().name().equalsIgnoreCase(estado))
+                        .toList();
+            }
+            if (tipoEnvio != null && !tipoEnvio.isEmpty()) {
+                pedidos = pedidos.stream()
+                        .filter(p -> p.getTipoEnvio().name().equalsIgnoreCase(tipoEnvio))
                         .toList();
             }
             ByteArrayInputStream excelStream = excelService.generarReportePedidos(pedidos);
