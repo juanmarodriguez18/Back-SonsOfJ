@@ -64,8 +64,8 @@ public class SucursalController extends BaseControllerImpl<Sucursal, SucursalSer
     @PostMapping("")
     public ResponseEntity<?> save(@RequestBody Sucursal sucursal) {
         try {
-            service.save(sucursal);
-            return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"Sucursal guardada exitosamente\"}");
+            sucursal.getImagenesSucursal().forEach(imagenSucursal -> imagenSucursal.setSucursal(sucursal));
+            return ResponseEntity.status(HttpStatus.OK).body(service.save(sucursal));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\":\"Error al guardar la sucursal. Por favor intente luego\"}");
