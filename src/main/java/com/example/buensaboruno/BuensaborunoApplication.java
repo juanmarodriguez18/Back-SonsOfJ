@@ -164,19 +164,19 @@ public class BuensaborunoApplication {
             logger.info("-----> Terminada la creacion de Pais, Provincias y Localidades");
 
             // Crear Empresa, la Imagen y asociarla
-            Empresa empresaCarlos = Empresa.builder()
+            Empresa empresaJuanBurger = Empresa.builder()
                     .nombre("La Juanburgueseria")
                     .cuil(30546780L)
                     .razonSocial("Venta de Alimentos Manufacturados")
                     .build();
             ImagenEmpresa imgEmpCarlos = ImagenEmpresa.builder()
-                    .url("https://i.postimg.cc/Sstymbny/Juanburguesas-logo.jpg")
-                    .empresa(empresaCarlos)
+                    .url("https://i.postimg.cc/vZg0k7N9/Juanburguesas-logo.jpg")
+                    .empresa(empresaJuanBurger)
                     .build();
-            empresaCarlos.getImagenesEmpresa().add(imgEmpCarlos);
+            empresaJuanBurger.getImagenesEmpresa().add(imgEmpCarlos);
 
             // Guardar Empresa e Imagen
-            empresaRepository.save(empresaCarlos);
+            empresaRepository.save(empresaJuanBurger);
             imagenEmpresaRepository.save(imgEmpCarlos);
 
             // Crear Sucursales, las Imagenes y asociarlas
@@ -184,13 +184,13 @@ public class BuensaborunoApplication {
                     .nombre("En Guaymallen")
                     .horarioApertura(LocalTime.of(17, 0))
                     .horarioCierre(LocalTime.of(23, 0))
-                    .empresa(empresaCarlos)
+                    .empresa(empresaJuanBurger)
                     .build();
             Sucursal sucursalMarDelPlata = Sucursal.builder()
                     .nombre("En Lujan")
                     .horarioApertura(LocalTime.of(16, 0))
                     .horarioCierre(LocalTime.of(23, 30))
-                    .empresa(empresaCarlos)
+                    .empresa(empresaJuanBurger)
                     .build();
             ImagenSucursal imgSucGuay = ImagenSucursal.builder()
                     .url("https://i.postimg.cc/7P5Cfwg8/la-Juanburgueseria-sucursal2.jpg")
