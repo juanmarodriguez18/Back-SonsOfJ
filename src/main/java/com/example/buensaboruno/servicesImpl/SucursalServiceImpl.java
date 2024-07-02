@@ -71,6 +71,36 @@ public class SucursalServiceImpl extends BaseServiceImpl<Sucursal, Long> impleme
         return sucursalRepository.save(sucursal);
     }
 
+    @Override
+    @Transactional
+    public Sucursal update(Sucursal sucursal) {
+        // Asegurarse de que las imágenes tengan referencia a la sucursal
+        Set<ImagenSucursal> nuevasImagenes = sucursal.getImagenesSucursal().stream()
+                .peek(imagen -> imagen.setSucursal(sucursal))
+                .collect(Collectors.toSet());
+        sucursal.setImagenesSucursal(nuevasImagenes);
+
+        // Obtener el domicilio actual asociado a la sucursal en la base de datos
+        Domicilio domicilioActual = sucursalRepository.findById(sucursal.getId())
+                .orElseThrow(() -> new RuntimeException("No se encontró la sucursal con ID: " + sucursal.getId()))
+                .getDomicilio();
+
+        // Actualizar el domicilio con los nuevos datos
+        Domicilio domicilio = sucursal.getDomicilio();
+        domicilioActual.setCalle(domicilio.getCalle());
+        domicilioActual.setNumero(domicilio.getNumero());
+        domicilioActual.setCp(domicilio.getCp());
+        domicilioActual.setNroDpto(domicilio.getNroDpto());
+        domicilioActual.setPiso(domicilio.getPiso());
+        domicilioActual.setLocalidad(domicilio.getLocalidad());
+
+        // Guardar el domicilio actualizado
+        domicilioRepository.save(domicilioActual);
+
+        // Guardar la sucursal actualizada
+        return sucursalRepository.save(sucursal);
+    }
+
     public List<ArticuloManufacturado> findArticulosManufacturadosBySucursalId(Long id) {
         return sucursalRepository.findArticulosManufacturadosBySucursalId(id);
     }
