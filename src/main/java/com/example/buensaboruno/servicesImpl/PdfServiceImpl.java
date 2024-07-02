@@ -60,7 +60,7 @@ public class PdfServiceImpl implements PdfService  {
         //Inicializar datos
         String logoString = pedido.getSucursal().getEmpresa().getImagenesEmpresa().iterator().next().getUrl();
         Image logo = Image.getInstance(logoString);
-        logo.scalePercent(28f);
+        logo.scaleToFit(80f, 80f);
         String nombreEmpresa = pedido.getSucursal().getEmpresa().getNombre();
         String nombreSucursal = pedido.getSucursal().getNombre();
         String cuit = pedido.getSucursal().getEmpresa().getCuil().toString();
