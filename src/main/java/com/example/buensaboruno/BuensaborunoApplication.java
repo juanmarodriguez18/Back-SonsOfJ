@@ -691,6 +691,8 @@ public class BuensaborunoApplication {
             imagenEmpleadoRepository.save(imagenEmpleado);
             ImagenEmpleado imagenAdmin = ImagenEmpleado.builder().url("https://i.postimg.cc/8zbVsy3g/messi-copa-del-mundo.jpg").build();
             imagenEmpleadoRepository.save(imagenAdmin);
+            ImagenEmpleado imagenAdmin2 = ImagenEmpleado.builder().url("https://i.postimg.cc/ncX914sC/dibu.jpg").build();
+            imagenEmpleadoRepository.save(imagenAdmin2);
             ImagenEmpleado imagenCocinero = ImagenEmpleado.builder().url("https://i.postimg.cc/Gp4P2ph0/cocinero.jpg").build();
             imagenEmpleadoRepository.save(imagenCocinero);
             ImagenEmpleado imagenDelivery = ImagenEmpleado.builder().url("https://i.postimg.cc/MGg7j8vn/delivery.jpg").build();
@@ -762,6 +764,19 @@ public class BuensaborunoApplication {
             admin.setImagenEmpleado(imagenAdmin);
             empleadoRepository.save(admin);
             logger.info("Empleado{}:", admin);
+
+            Empleado admin2 = new Empleado();
+            admin2.setEmail("admin2@elbuensabor.com");
+            admin2.setTipoEmpleado(Rol.ADMIN);
+            admin2.setNombre("Emiliano");
+            admin2.setClave(passwordEncoder.encode("Admin456"));
+            admin2.setApellido("Martinez");
+            admin2.setTelefono("2614578693");
+            admin2.setSucursal(sucursalMarDelPlata);
+            admin2.setFechaNacimiento(LocalDate.of(1985, 1, 14));
+            admin2.setImagenEmpleado(imagenAdmin2);
+            empleadoRepository.save(admin2);
+            logger.info("Empleado{}:", admin2);
 
             Empleado cocinero = new Empleado();
             cocinero.setEmail("cocinero1@elbuensabor.com");
